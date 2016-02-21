@@ -1,0 +1,18 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> <a href="/admin/nomenclature">{{__("Nomenclature")}}</a> -> <a href="/admin/specialty">{{__("Spécialités")}}</a> -> {{__("Modification d'une spécialité")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Mise à jour du critère")}}</h1>
+        </span>
+        <div class="div-box-body">
+            <form action="/admin/specialty/update" method="post">            
+                <input type="text" name="name" placeholder="{{__("Libellé du critère")}}" value="{{specialty.name}}" required="required"/>
+                <input type="hidden" name="_id" value="{{specialty._id}}" />
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+            </form>
+        </div>
+    </span>
+</div>

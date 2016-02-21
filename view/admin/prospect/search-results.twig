@@ -1,0 +1,36 @@
+<span class="ariane-header">
+    <h1><a href="/admin/prospect">{{__("Prospects")}}</a> -> <a href="/admin/prospect/search">{{__("Rechercher")}}</a></h1>
+</span>
+
+<span class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Résultat")}} ({{count}})</h1>
+        </span>
+        <div class="div-box-body bg-white">
+            <p>&nbsp;</p>
+            {% if result is defined and result.length > 0%}  
+                <table>
+                    {% for item in result %}
+                        <tr>
+                            <td>
+                                <a href="/admin/prospect/update/{{ item._id }}" title="{{__("modifier ce prospect")}}">{{ item.company }}</a> 
+                                {% if item.url %}
+                                &nbsp;|&nbsp;<a href="{{item.url}}" target="_blank">client</a>
+                                {%endif%}                                
+                                <form action="/admin/prospect/send-subscription" target="_blank" method="post" class="form-send-subscription">      
+                                    <input type="hidden" name="email" value="{{item.email}}" />
+                                    <input type="hidden" name="password" value="{{item.password}}" />
+                                    <input type="submit" class="btn-form btn-form-p" value="{{__("envoyer inscription")}}" />
+                                </form>
+                                {% if item.email_subscription_sent ==1 %}<span style="color:#F62459">Inscription envoyée ({{item.email_subscription_sent_date}})</span>{%endif%}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>{{__("Aucun résultat")}}</p>
+            {% endif %}
+        </div>
+    </span>
+</span>

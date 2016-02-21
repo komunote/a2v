@@ -1,0 +1,29 @@
+<span class="ariane-header">
+    <h1><a href="/admin/client">{{__("Clients")}}</a> -> <a href="/admin/client/search">{{__("Rechercher clients")}}</a> -> {{__("Résultat de la recherche")}}</h1>
+</span>
+
+<span class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Résultat")}} ({{count}})</h1>
+        </span>
+        <div class="div-box-body bg-white">
+            {% if result is defined and result.length > 0%}  
+                <table>
+                    {% for item in result %}
+                        <tr>
+                            <td>
+                                <a href="/admin/client/update/{{ item._id }}" title="{{__("modifier ce client")}}">{{ item.company }}</a>                                 
+                                {% if item.url %}
+                                    &nbsp;|&nbsp;<a href="{{item.url}}" target="_blank">se connecter</a>
+                                {%endif%}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>{{__("Aucun résultat")}}</p>
+            {% endif %}
+        </div>
+    </span>
+</span>

@@ -1,0 +1,85 @@
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>{{__("Gestion des QR Codes")}}</h1>
+    </span>
+    <div class="div-box-body bg-white">
+
+        <fieldset>
+            <legend align="center" style="background-color: #0000ff">{{__("QR Codes validés")}} ({{qrCodes.validated.length}})</legend>
+            <table>                
+                {%if qrCodes.validated.length >0 %}
+                    <tr>
+                        <th style="width: 20%">{{__("Pseudo")}}</th>
+                        <th style="width: 20%">{{__("Date")}}</th>
+                        <th style="width: 40%">{{__("Réduc°")}}</th>
+                        <th style="width: 20%">{{__("Qté")}}</th>
+                    </tr>
+                    {%for item in qrCodes.validated %}                    
+                        <tr>
+                            <td>{{item.nickname}}</td>
+                            <td>{{item.qr_code.date_created}}</td>
+                            <td>{{item.qr_code.reduction}}</td>
+                            <td>{{item.qr_code.quantity}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                {%else%}
+                    <tr>
+                        <td colspan="4">{{__("Aucun enregistrement")}}</td>
+                    </tr>
+                {%endif %}
+            </table>
+        </fieldset>
+        <p>&nbsp;</p>
+        <fieldset>
+            <legend align="center" style="background-color: #F62459">{{__("QR Codes en cours de validité")}} ({{qrCodes.opened.length}})</legend>
+            <table>                
+                {%if qrCodes.opened.length >0 %}
+                    <tr>
+                        <th style="width: 20%">{{__("Pseudo")}}</th>
+                        <th style="width: 20%">{{__("Date")}}</th>
+                        <th style="width: 40%">{{__("Réduc°")}}</th>
+                        <th style="width: 20%">{{__("Qté")}}</th>
+                    </tr>
+                    {%for item in qrCodes.opened %}                    
+                        <tr>
+                            <td>{{item.nickname}}</td>
+                            <td>{{item.qr_code.date_created}}</td>
+                            <td>{{item.qr_code.reduction}}</td>
+                            <td>{{item.qr_code.quantity}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                {%else%}
+                    <tr>
+                        <td colspan="4">{{__("Aucun enregistrement")}}</td>
+                    </tr>
+                {%endif %}
+            </table>
+        </fieldset>
+        <p>&nbsp;</p>
+        <fieldset>
+            <legend align="center">{{__("QR Codes en fin de validité")}} ({{qrCodes.closed.length}})</legend>
+            <table>                
+                {%if qrCodes.closed.length >0 %}
+                    <tr>
+                        <th style="width: 20%">{{__("Pseudo")}}</th>
+                        <th style="width: 20%">{{__("Date")}}</th>
+                        <th style="width: 40%">{{__("Réduc°")}}</th>
+                        <th style="width: 20%">{{__("Qté")}}</th>
+                    </tr>
+                    {%for item in qrCodes.closed %}                    
+                        <tr>
+                            <td>{{item.nickname}}</td>
+                            <td>{{item.qr_code.date_created}}</td>
+                            <td>{{item.qr_code.reduction}}</td>
+                            <td>{{item.qr_code.quantity}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                {%else%}
+                    <tr>
+                        <td colspan="4">{{__("Aucun enregistrement")}}</td>
+                    </tr>
+                {%endif %}
+            </table>
+        </fieldset>                         
+    </div>
+</div>

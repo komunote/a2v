@@ -1,0 +1,28 @@
+<script>
+    if (navigator.geolocation) {        
+        navigator.geolocation.getCurrentPosition(
+                successGetCurrentPositionAdminCallback,
+                errorGetCurrentPositionCallback,
+                {enableHighAccuracy: true, timeout: 20000, maximumAge: 600000});
+    } else {
+        $('#login-form').hide();
+        console.log('api non dispo');
+    }
+</script>
+
+<span class="div-box-main"> 
+    <span class="div-box" id="login-form">
+        <span class="div-box-header">
+            <h1>{{__("Section réservée à l'administration")}}</h1>
+        </span>
+        <div class="div-box-body bg-white">  
+            <form action="/admin/login/" method="post">                 
+                <input type="text" name="login" placeholder="{{__("Login")}}" required="required" /><br />
+                <input type="password" name="password" placeholder="{{__("Mot de passe")}}" required="required" /><br />
+                <input type="hidden" name="longitude" id="longitude" />
+                <input type="hidden" name="latitude" id="latitude" />
+                <input type="submit" class="btn-form btn-form-p" value="{{__("Connexion")}}" />
+            </form>
+        </div>
+    </span>
+</span>

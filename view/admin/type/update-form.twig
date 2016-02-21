@@ -1,0 +1,9 @@
+<h1><a href="/admin">{{__("Admin")}}</a> -> 
+    <a href="/admin/nomenclature">{{__("Nomenclature")}}</a> -> 
+    <a href="/admin/type">{{__("Types")}}</a> -> 
+    {{__("Modification d'un type de valeur")}}</h1><br />
+<form action="/admin/type/update" method="post">            
+    <input type="text" name="name" placeholder="{{__("Libellé du type de valeur")}}" value="{{type.name}}" required="required"/>
+    <input type="hidden" name="_id" value="{{type._id}}" />
+    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+</form>

@@ -1,0 +1,137 @@
+<script src="static/js/geolocalisation_admin.js"></script>
+<script>
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+<span class="ariane-header">
+    <h1><a href="/admin/prospect">Prospects ({{count}})</a> -> Ajouter</h1>
+</span>
+
+<section>
+    <div id="div-search" class="div-box-body bg-white">        
+        <input type="text" id="input-address" placeholder="Nom + adresse + ville + code postal + pays" required="required"/> 
+        <input type="text" id="keyword" placeholder="mots clés" required="required"/> <br />
+        <input type="button" id="btn-find-address"  value="Rechercher" class="btn-form btn-form-p"/>
+        <br />
+        {% if admin.status == 1 %}
+            <select name="type" id="type">
+                <option value="restaurant">Restaurants</option>                    
+                <option value="bar">Bars</option>                    
+                <option value="cafe">Cafés</option>                    
+                <option value="beauty_salon">Salons de beauté</option>                    
+                <option value="spa">Spas</option>                    
+                <option value="hair_care">Coiffeurs</option>                    
+                <option value="night_club">Clubs/Discothèques</option>                                
+            </select>        
+            <br />
+            <div id="map-canvas"></div>        
+        {%endif%}        
+        {% if admin.status == 1 %}
+            <input type="button" class="btn-form btn-form-p add-all" value="Tout ajouter" />
+            <div id="div-results-map"><table id="results"></table></div>
+            {%endif%}
+    </div>
+
+    <div id="div-form" class="div-box-body bg-white">                        
+        <div id="div-results"></div>
+        <form action="/admin/prospect/add/" method="post" id="add-prospect-form">                             
+
+            <input type="text" name="latitude" id="input-latitude" placeholder="Latitude" readonly="readonly" required="required" />
+            <input type="text" name="longitude" id="input-longitude" placeholder="Longitude" readonly="readonly" required="required" /><br />
+            <input type="text" name="address" id="input-formatted-address" placeholder="Adresse formatée" required="required" /><br />
+            <input type="text" name="postalcode" id="input-postalcode" placeholder="Code postal" readonly="readonly" required="required" />
+            <input type="text" name="city" id="input-city" placeholder="Ville" readonly="readonly" required="required" /><br />
+            <input type="text" name="deptnumber" id="input-deptnumber" placeholder="N° Département" readonly="readonly" required="required" />
+            <input type="text" name="department" id="input-department" placeholder="Département" readonly="readonly" required="required" />            <br />
+            <input type="text" name="state" id="input-state" placeholder="Région" readonly="readonly" required="required" />
+            <input type="text" name="country" id="input-country" placeholder="Pays" readonly="readonly" required="required" />
+            <hr />
+            <select name="category">                                        
+                <option>----avec rendez-vous----</option>
+                <option value="100">Restaurant (toutes catégories)</option>
+                <option value="101">Salon de coiffure</option>
+                <option value="102">Salon esthétique</option>
+                <option value="103">Spa/détente</option>
+                <option value="104">Salon de massage</option>
+                <option value="105">Plomberie</option>
+                <option value="106">Electricien</option>
+                <option value="107">Chauffagiste</option>                              
+                <option value="108">Garagiste</option>
+                
+                <option value="201">Salon de thé</option>
+                <option value="202">Café</option>
+                <option value="203">Pub</option>
+                <option value="204">Traîteur</option>
+                <option value="205">Snack</option>
+                <option value="206">Pizzeria</option>
+                <option value="207">Kebab</option>
+                <option value="208">Boulangerie</option>
+                <option value="209">Pâtisserie</option>
+                <option value="210">Boulangerie/Pâtisserie</option>
+                <option value="211">Boucherie/Charcuterie</option>
+                <option value="212">Epicerie</option>
+                <option value="213">Epicerie fine</option>
+                <option value="214">Epicerie BIO</option>
+                <option value="215">Primeur</option>
+                <option value="216">Confiserie</option>                    
+                <option value="217">Plomberie</option>
+                <option value="218">Electricien</option>
+                <option value="219">Chauffagiste</option>
+                <option value="220">Menuisier</option>
+                <option value="221">Cordonier</option>
+                <option value="222">Garagiste</option>
+                <option value="223">Opticien</option>                    
+                <option value="224">Boutique de chaussures</option>
+                <option value="225">Boutique de vêtements</option>
+                <option value="226">Librairie</option>        
+                <option value="227">Fleuriste</option>
+                
+                <option value="300">Hôtel</option>
+                <option value="301">Chambre d'hôtes</option>
+                <option value="302">Auberge de jeunesse</option>
+                <!--<option value="400">Hôtel</option>
+                <option value="401">Spa</option>                    -->
+            </select>             
+            <input type="text" name="company" placeholder="Nom de l'entreprise" required="required" /><br />
+            <input type="email" name="email" placeholder="Email de l'entreprise" />
+            <!--<input type="url" name="website" placeholder="Site web de l'entreprise" />-->
+            <input type="tel" name="phone" placeholder="Téléphone de l'entreprise" required="required"/><br />
+            <!--<input type="text" name="contact" placeholder="Nom du contact et sa fonction" value="" />-->
+
+            <!--<label>Envoyer infos par email ?</label>
+            <select name="sendemail">
+                <option value="0">-</option>
+                <option value="1">oui</option>
+                <option value="2">non</option>
+            </select> <br />-->
+            <!--<label>Intéressé(e) ?</label>
+            <select name="interested">
+                <option value="0">-</option>
+                <option value="6">Wonderbox</option>
+                <option value="5">Trip Advisor</option>     
+                <option value="4">La Fourchette</option>
+                <option value="1">Intéressé</option>                    
+                <option value="3">Très intéressé</option>
+                <option value="2">Pas intéressé</option>
+            </select><br />-->
+            <textarea name="comment" placeholder="Commentaire"></textarea><br />
+            <input type="hidden" name="reviews" />
+            <input type="hidden" name="types" /><br />
+            <input type="submit" class="btn-form btn-form-p" value="Ajouter" /> <!--id="btn-add-prospect"-->
+            <div style="display:none" id="confirm-add-prospect-msg">Souhaitez-vous vraiment ajouter ce prospect ?</div>            
+        </form>    
+    </div>  
+
+    {% if admin.status == 1 %}
+        <div id="update-location" class="div-box-body bg-white" style="/*position:fixed; float:right; right:100px; top:112px;*/ width:100%; min-width: 320px;">
+            <input type="button" class="btn-form btn-form-p btn-apply-geolocation" value="MAJ géoloc pour tous" />
+        </div>    
+    {%endif%}
+
+    <div id="test-popup" class="white-popup mfp-hide" style="display:none;">
+        Souhaitez-vous vraiment ajouter ce prospect ?
+    </div>
+
+</section>
+
+

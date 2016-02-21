@@ -1,0 +1,41 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> <a href="/admin/client">{{__("Clients")}}</a> -> {{__("Modification d'un client")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Mise à jour du client")}}</h1>
+        </span>
+        <div class="div-box-body bg-white">  
+            <!--<form action="/admin/client/send-subscription" target="_blank" method="post">      
+                <input type="hidden" name="email" value="{{client.email}}" />
+                <input type="hidden" name="password" value="{{client.password}}" />
+                <input type="submit" class="btn-form btn-form-p" value="{{__("envoyer demande inscription")}}" />
+            </form>-->
+            
+            <form action="/admin/client/update" method="post">      
+                <p><span>email: {{client.email}}</span> -  <span>mot de passe : {{client.password}}</span></p>
+                <input type="text" name="company" placeholder="{{__("Nom de l'entreprise")}}" value="{{client.company}}" required="required" />            
+                <select name="category">
+                    <option value="">Choisir la catégorie</option>      
+                    <option value="1" {% if client.category == 1  %}selected="selected"{% endif %}>Restaurant</option>
+                    <option value="2" {% if client.category == 2  %}selected="selected"{% endif %}>Café/Pub</option>                                                                  
+                </select>
+                     
+                <input type="email" name="email" placeholder="{{__("Email de l'entreprise")}}" value="{{client.email}}"/>
+                <input type="url" name="website" placeholder="{{__("Site web de l'entreprise")}}" value="{{client.website}}" /><br />
+                <input type="tel" name="phone" placeholder="{{__("Téléphone de l'entreprise")}}" value="{{client.phone}}" />
+                <input type="text" name="address" placeholder="{{__("Adresse de l'entreprise")}}" value="{{client.address}}" /><br />
+                <input type="text" name="postalcode" placeholder="{{__("Code postal de l'entreprise")}}" value="{{client.postalcode}}" />
+                <input type="text" name="city" placeholder="{{__("Ville de l'entreprise")}}" value="{{client.city}}" /><br />        
+                <input type="text" name="contact" placeholder="{{__("Nom du contact et sa fonction")}}" value="{{client.contact}}" />
+                <label>{{__("Note")}}</label><input type="number" name="note" step="0.1" min="0" max="5" value="{{client.note}}"/><br />
+                <hr />
+                
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+                <input type="hidden" name="_id" value="{{client._id}}" />
+            </form>
+        </div>
+    </span>
+</div>

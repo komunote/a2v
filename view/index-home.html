@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google-site-verification" content="ICca0dezsjs4sgMMcZSgilXLP7WkWGRyGlZPX-aC408" />
+    <meta name="msvalidate.01" content="16F0F8E869D560E8403C4932A7A38C7F" />
+    <meta name="keywords" content="autour2vous, autourdevous, autour de vous, réservation, restaurant, pub, bar, hotel, taxi, événement, où sortir ce soir" />
+    <meta name="description" content="site de bons plans 100% gratuit, réductions auprès des artisans et commerçants locaux, réservations auprès de restaurants et hôtels. " />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+    <meta http-equiv="ScreenOrientation" content="rightHanded">
+    <link rel="icon" href="static/image/favicon.ico" />
+
+    <!-- Latest compiled and minified CSS -->
+    <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"-->
+    <link rel="stylesheet" href="static/css/a2v/bootstrap.min.css">
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="static/css/a2v/style.css">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>autour2vous</title>
+  </head>
+  <body>
+    <header>
+      <span class="logo col-xs-6"><span class="pink">autour<span class="white">2</span>vous</span></span>
+      <nav class="hidden-xs col-xs-6 pull-right">
+        <ul class="nav nav-pills">
+          <li>
+            <a href="#" title="Inscription" class="dc-modal-click white"
+              data-id="subscribe-alert">
+              <span class="glyphicon glyphicon-user"></span> Inscription</a>
+          </li>
+          <li>
+            <a href="#" title="Connexion" class="dc-modal-click white"
+            data-id="login-alert">
+              <span class="glyphicon glyphicon-off"></span> Connexion</a>
+          </li>
+        </ul>
+      </nav>
+      <nav class="visible-xs col-xs-6 pull-right">
+        <a href="#" title="Menu" class="dc-modal-click"
+          data-id="menu-home-alert">
+          <span class="btn-lg glyphicon glyphicon-menu-hamburger white"></span>
+        </a>
+      </nav>
+    </header>
+    <section id="container">
+      <article class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <h1>Tous les bons plans autour de chez vous.</h1>
+            <p>Tous les bons plans autour de chez vous.</p>
+            <p>Avec la carte fidélité gratuite, cumulez des points dès le premier achat chez votre commerçant</p>
+            <hr />
+
+            <div class="dc-modal-bg">
+              <div id="menu-home-alert" class="dc-modal">
+                <ul class="nav">
+                  <li>
+                    <a href="#" title="Inscription" class="dc-modal-click"
+                      data-id="subscribe-alert">
+                      <span class="glyphicon glyphicon-user"></span> Inscription</a>
+                  </li>
+                  <li>
+                    <a href="#" title="Connexion" class="dc-modal-click"
+                      data-id="login-alert">
+                      <span class="glyphicon glyphicon-off"></span> Connexion</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="dc-modal-bg">
+              <div id="login-alert" class="dc-modal">
+                <form method="post" action="/login" id="login-form">
+                  <h2>Section membres</h2>
+                  <hr />
+                  <div class="form-group">
+                    <label for="email1">Adresse email</label>
+                    <input type="email" class="form-control" name="email" id="email1" placeholder="monAdresseEmail" required="required" />
+                  </div>
+                  <div class="form-group">
+                    <label for="password1">Mot de passe</label>
+                    <input type="password" class="form-control" name="password" id="password1" placeholder="votre mot de passe" required="required"/>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="remember" value="1">
+                      <span>Rester connecté(e)</span>
+                    </label>
+                  </div>
+                  <p id="location">Votre position : <span></span></p>
+                  <button type="submit" class="btn btn-primary btn-lg" disabled="disabled">connexion</button>
+                </form>
+              </div>
+            </div>
+
+            <div class="dc-modal-bg">
+              <div id="subscribe-alert" class="dc-modal">
+                <form method="post" action="/subscribe">
+                  <h2>Inscription</h2>
+                  <div class="form-group">
+                    <label for="email2">Adresse email</label>
+                    <input type="email" class="form-control" name="email" id="email2" placeholder="monAdresseEmail" required="required" />
+                  </div>
+                  <div class="form-group">
+                    <label for="password2">Mot de passe</label>
+                    <input type="password" class="form-control" name="password" id="password2" placeholder="votre mot de passe" required="required"/>
+                  </div>
+                  <div class="form-group">
+                    <label for="password_confirm2">Confirmation du mot de passe</label>
+                    <input type="password" class="form-control" name="password_confirm" id="password_confirm2" placeholder="votre mot de passe" required="required"/>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="cgu" required="required" value="1">
+                      <span>J'accepte les conditions générales</span>
+                    </label>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-lg">inscription</button>
+                </form>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="col-xs-4">
+                <div>bloc 1</div>
+              </div>
+              <div class="col-xs-4">
+                <div>bloc 2</div>
+              </div>
+              <div class="col-xs-4">
+                <div>bloc 3</div>
+              </div>
+              <div class="visible-xs"><hr /></div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <pre>
+                <ul>
+                  {% for client in result.clients %}
+                  <li>{{ dump(client) }}</li>
+                  {% endfor %}
+                </ul>
+              </pre>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+    <footer>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">A propos</a></li>
+      </ul>
+    </footer>
+    <!--script>var start = new Date().getTime(), end;</script-->
+    <!--script>end = new Date().getTime(); console.log((end-start));</script-->
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyCcfYZ82g5_EVba-TuXh81eCl0sbWN-Isg"></script>
+    <script src="js/user-home.js"></script>
+    <script>
+      /*$.get('/getNearbyProspects', function(result){
+        console.log(result);
+      });*/
+    </script>
+  </body>
+</html>

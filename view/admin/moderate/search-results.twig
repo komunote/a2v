@@ -1,0 +1,40 @@
+<span class="ariane-header">
+    <h1><a href="/admin/moderate">{{__("Modération")}}</a> -> <a href="/admin/moderate">{{__("Modérations des photos")}}</a> -> {{__("Résultat de la recherche")}}</h1>
+</span>
+
+<span class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Résultat")}}</h1>
+        </span>
+        <div class="div-box-body bg-white">
+            {% if result is defined and result.length > 0%}  
+                <table>
+                    <tr>
+                        <th style="width: 30%">{{__("Pseudo")}}</th>
+                        <th style="width: 40%">{{__("Image à modérer")}}</th>                        
+                        <th style="width: 30%">{{__("Action")}}</th>
+                        
+                    </tr>
+                    {% for item in result %}
+                        {% for i in 0..2 %}
+                            {% if item.pictures[type][i].toValidate == 1 and item.pictures[type][i].thumb|length >0 %}
+                            <tr>
+                                <td>{{item.nickname}}<p></td>
+                                <td><img src="{{ item.pictures[type][i].thumb }}" /></p></td>                                
+                                <td style="background-color: #f62459; border: 1px #000 dashed">
+                                    <a class="link-validate-photo btn" href="#" d-id="{{ item._id }}" d-type="{{type}}" d-number="{{i}}" title="{{__("valider")}}">{{ __("valider") }}</a> <br />
+                                    <a class="link-cancel-photo btn" href="#" d-id="{{ item._id }}" d-type="{{type}}" d-number="{{i}}" title="{{__("refuser")}}">{{ __("refuser") }}</a>
+                                </td>
+                                <!--<td><a class="link-cancel-photo btn" href="#" data="/admin/moderate/photo/cancel/{{ item._id }}/{{type}}/{{i}}" title="{{__("refuser")}}">{{ __("refuser") }}</a> </td>-->
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}                    
+                </table>
+            {% else %}
+                <p>{{__("Aucun résultat")}}</p>
+            {% endif %}
+        </div>
+    </span>
+</span>

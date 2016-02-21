@@ -1,0 +1,31 @@
+<h1><a href="/admin">{{__("Admin")}}</a> -> 
+    <a href="/admin/nomenclature">{{__("Nomenclature")}}</a> ->     
+    {{__("Gestion des types de valeurs")}}</h1><br />
+<form action="/admin/type/add" method="post">            
+    <input type="text" name="name" placeholder="{{__("Libellé du type de valeur")}}" required="required"/>
+    <select name="type_value">
+        <option value="0">{{__("Valeur libre")}}</option>
+        <option value="1">{{__("Liste de choix")}}</option>
+    </select>
+    {% if result is defined %}  
+        <select id="select-criteria">
+            {% for criteria in result %}
+                <option value="{{criteria._id}}">{{ __(criteria.name) }} </option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <p>{{__("Aucun résultat")}}</p>
+    {% endif %}
+    <input type="text" name="value" placeholder="" />
+    <input type="submit" class="btn-form btn-form-p" value="{{__("ajouter")}}" />
+</form>
+<hr />
+{% if result is defined %}  
+    <ul>
+        {% for type in result %}
+            <li>{{ __(type.name) }} <a href="/admin/type/update/{{ type._id }}" title="{{__("modifier")}}">{{ __("modifier") }}</a></li>
+            {% endfor %}
+    </ul>
+{% else %}
+    <p>{{__("Aucun résultat")}}</p>
+{% endif %}

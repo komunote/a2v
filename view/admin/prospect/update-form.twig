@@ -1,0 +1,93 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> <a href="/admin/prospect">{{__("Prospects")}}</a> -> {{__("Modification d'un prospect")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Mise à jour du prospect")}}</h1>
+        </span>
+        <div class="div-box-body bg-white">  
+            <form action="/admin/prospect/send-subscription" target="_blank" method="post">      
+                <input type="hidden" name="email" value="{{prospect.email}}" />
+                <input type="hidden" name="password" value="{{prospect.password}}" />
+                <input type="submit" class="btn-form btn-form-p" value="{{__("envoyer inscription")}}" />
+            </form>
+            <form action="/admin/prospect/update" method="post">      
+                <p><span>email: {{prospect.email}}</span> -  <span>mot de passe : {{prospect.password}}</span></p>
+                <input type="text" name="company" placeholder="{{__("Nom de l'entreprise")}}" value="{{prospect.company}}" required="required" />            
+                <select name="category">
+                    <option value="">Choisir la catégorie</option>      
+                    <option value="Restaurant" {% if prospect.category == 'Restaurant'  %}selected="selected"{% endif %}>Restaurant</option>
+                    <option value="Café/Pub" {% if prospect.category == 'Café/Pub'  %}selected="selected"{% endif %}>Café/Pub</option>                                                                  
+                </select>
+                     
+                <input type="email" name="email" placeholder="{{__("Email de l'entreprise")}}" value="{{prospect.email}}"/>
+                <input type="url" name="website" placeholder="{{__("Site web de l'entreprise")}}" value="{{prospect.website}}" />
+                <input type="tel" name="phone" placeholder="{{__("Téléphone de l'entreprise")}}" value="{{prospect.phone}}" />
+                <input type="text" name="address" placeholder="{{__("Adresse de l'entreprise")}}" value="{{prospect.address}}" />
+                <input type="text" name="postalcode" placeholder="{{__("Code postal de l'entreprise")}}" value="{{prospect.postalcode}}" />
+                <input type="text" name="city" placeholder="{{__("Ville de l'entreprise")}}" value="{{prospect.city}}" />                
+                <input type="text" name="contact" placeholder="{{__("Nom du contact et sa fonction")}}" value="{{prospect.contact}}" />
+                <label>{{__("Note")}}</label><input type="number" name="note" step="0.1" min="0" max="5" value="{{prospect.note}}"/>
+                <hr />
+
+                <!--<select name="contract">
+                    <option value="0">{{__("Type de contrat")}}</option>
+                    <option value="36"{% if "36" == prospect.contract %} selected="selected"{% endif %}>{{__("36 mois")}}</option>
+                    <option value="24"{% if "24" == prospect.contract %} selected="selected"{% endif %}>{{__("24 mois")}}</option>
+                    <option value="12"{% if "12" == prospect.contract %} selected="selected"{% endif %}>{{__("12 mois")}}</option>
+                </select>
+
+                <select name="product">
+                    <option value="0">{{__("Type d'abonnement")}}</option>                    
+                    <option value="1"{% if "1" == prospect.product %} selected="selected"{% endif %}>{{__("Standard")}}</option>                                                            
+                    <option value="2"{% if "2" == prospect.product %} selected="selected"{% endif %}>{{__("Premium")}}</option>
+                    <option value="3"{% if "3" == prospect.product %} selected="selected"{% endif %}>{{__("Réservation")}}</option>
+                </select>-->
+
+                <!--<label>{{__("A recontacter ?")}}</label>
+                <select name="tobecontacted">
+                    <option value="0">-</option>
+                    <option value="1"{% if "1" == prospect.tobecontacted %} selected="selected"{% endif %}>{{__("oui")}}</option>
+                    <option value="2"{% if "2" == prospect.tobecontacted %} selected="selected"{% endif %}>{{__("non")}}</option>
+                </select>                 
+                <input type="text" name="tobecontacteddate" placeholder="{{__("Date et heure à rappeler")}}" value="{{prospect.tobecontacteddate}}" />            -->
+
+                <!--<label>{{__("Envoyer infos par email ?")}}</label>
+                <select name="sendemail">
+                    <option value="0">-</option>
+                    <option value="1"{% if "1" == prospect.sendemail %} selected="selected"{% endif %}>{{__("oui")}}</option>
+                    <option value="2"{% if "2" == prospect.sendemail %} selected="selected"{% endif %}>{{__("non")}}</option>
+                </select>                -->
+
+                <label>{{__("Intéressé(e) ?")}}</label>
+                <select name="interested">
+                    <option value="0">-</option>
+                    <option value="6">Wonderbox</option>
+                    <option value="5">Trip Advisor</option>     
+                    <option value="6"{% if "6" == prospect.interested %} selected="selected"{% endif %}>{{__("Wonderbox")}}</option>
+                    <option value="5"{% if "5" == prospect.interested %} selected="selected"{% endif %}>{{__("Trip advisor")}}</option>
+                    <option value="4"{% if "4" == prospect.interested %} selected="selected"{% endif %}>{{__("La Fourchette")}}</option>
+                    <option value="1"{% if "1" == prospect.interested %} selected="selected"{% endif %}>{{__("Intéressé")}}</option>
+                    <option value="3"{% if "3" == prospect.interested %} selected="selected"{% endif %}>{{__("Très intéressé")}}</option>
+                    <option value="2"{% if "2" == prospect.interested %} selected="selected"{% endif %}>{{__("Pas intéressé")}}</option>
+                </select>
+                
+                <label>{{__("Inscription envoyée ?")}}</label>
+                <select name="email_subscription_sent">
+                    <option value="0">-</option>
+                    <option value="1"{% if "1" == prospect.email_subscription_sent %} selected="selected"{% endif %}>{{__("oui")}}</option>
+                    <option value="2"{% if "2" == prospect.email_subscription_sent %} selected="selected"{% endif %}>{{__("non")}}</option>
+                </select>   
+
+                <label>{{__("Commentaire")}}</label>
+                <textarea name="comment" placeholder="{{__("Commentaire")}}">{{prospect.comment}}</textarea><br />
+
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+                <input type="hidden" name="_id" value="{{prospect._id}}" />
+                <input type="hidden" name="admin_creation" value="{{prospect.admin_creation}}" />
+            </form>
+        </div>
+    </span>
+</div>

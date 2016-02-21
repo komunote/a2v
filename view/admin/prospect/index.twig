@@ -1,0 +1,28 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> {{__("Prospects")}}</h1>
+</span>
+
+<span class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Gestion des prospects")}}</h1>
+        </span>
+        <div class="div-box-body bg-white">  
+            <p>&nbsp;</p>            
+            <p align="center">
+                <a href="/admin/prospect/add" title="{{__("ajouter un prospect")}}"><span class="button">{{__("ajouter")}}</span></a>
+                <a href="/admin/prospect/search" title="{{__("rechercher un prospect")}}"><span class="button">{{__("rechercher")}}</span></a>
+                {% if admin.status == 1 %}
+                <a href="/admin/prospect/generatePassword" target="_blank" title="{{__("Générer les mots de passe")}}">
+                    <span class="button">{{__("Générer mots de passe")}}</span>
+                </a>
+                {% endif %}  
+            </p>
+            <p>&nbsp;</p>            
+            <p align="center">
+                <a href="static/pdf/autour2vous_presentation.pdf"><span class="button">Présentation PDF</span></a>
+                <a href="static/pdf/autour2vous_presentation.pptx"><span class="button">Présentation PPT</span></a>
+            </p>
+        </div>
+    </span>
+</span>

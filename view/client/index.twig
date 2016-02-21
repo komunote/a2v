@@ -1,0 +1,45 @@
+<span class="div-box">
+    <span class="div-box-header">
+        <h1>Bienvenue sur votre accès client</h1>
+    </span>
+    <div class="div-box-body bg-white">
+        <p>&nbsp;</p>
+        {% if client.status == 0 %}
+            <p style="color:#0000ff">Votre compte n'est pas encore validé.</p>
+            <p><b>Merci de compléter les informations requises pour la validation de votre compte :</b></p><br />            
+            <ul style="list-style: square;text-align: left; width:250px; margin-left: 45%">
+                <li>SEPA/RIB</li><li>horaires</li><li>description</li><li>photos</li><li>entrées, menus, cartes, desserts, boissons</li>
+                <li>Réduction et condition</li>
+            </ul>            
+            <p>&nbsp;</p>
+        {%endif%}
+        
+        {% if client.status == -1 %}
+            <p style="color:#ff0000">Votre compte est suspendu.</p>
+            <p><b>Votre établissement n'a pas répondu récemment aux critères de qualité requis. Merci de contacter le service clientèle.</b></p>
+            <p>&nbsp;</p>
+        {%endif%}
+        
+        {% if client.status == -2 %}
+            <p style="color:#ff0000">Votre compte est radié.</p>
+            <p><b>Votre établissement n'a pas répondu à plusieurs reprises aux critères de qualité requis. Votre réinscription n'est pas possible avant 60 jours.</b></p>
+            <p>&nbsp;</p>
+        {%endif%}
+        
+        <p align="center">                        
+            {% if client.category ==1 %}
+                {% if client.status == 1 %}
+                    <a href="/client/reservation-form"><span class="btn-form-a">{{__("Mes réservations")}}</span></a>
+                {%endif%}
+                {% if client.reservation_mode ==1 %}
+                    <a href="/client/room-form"><span class="btn-form-a">{{__("Configurer mes salles")}}</span></a>
+                {%endif%}
+            {%endif%}
+            {% if client.category ==2 %}
+                <a href="/client/qrCode-form"><span class="btn-form-a">{{__("Mes codes barre")}}</span></a>
+            {%endif%}
+            <a href="/client/account-form"><span class="btn-form-a">{{__("Gestion du compte")}}</span></a>            
+            <a href="/client/invoice-form"><span class="btn-form-a">{{__("Facturation")}}</span></a>
+        </p>
+    </div>
+</span>

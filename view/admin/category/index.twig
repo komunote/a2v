@@ -1,0 +1,35 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> <a href="/admin/nomenclature">{{__("Nomenclature")}}</a> -> {{__("Gestion des catégories")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">        
+        <div class="div-box-body">
+            {% if msg is defined %}
+                {% if msg.success is defined %}
+                    <h1 style='color: #0000ff'>{{msg.success}}</h1>
+                {% endif %}
+                {% if msg.failed is defined %}
+                    <h1 style='color: #ff0000'>{{msg.failed}}</h1>
+                {% endif %}
+            {% endif %}
+            <form action="/admin/category/add" method="post">            
+                <input type="text" name="name" placeholder="{{__("Nom de la catégorie")}}" required="required"/>
+                <input type="submit" class="btn-form btn-form-p" value="{{__("ajouter")}}" />
+            </form>
+            <br />
+            {% if result is defined %}  
+                <table>
+                    {% for category in result %}
+                        <tr>
+                            <td><h1>{{ category.name }}</h1></td>
+                            <td><a href="/admin/category/update/{{ category._id }}" title="{{__("modifier")}}">{{ __("modifier") }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>{{__("Aucun résultat")}}</p>
+            {% endif %}
+        </div>
+    </span>
+</div>

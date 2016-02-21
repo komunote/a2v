@@ -1,0 +1,121 @@
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>Gestion des réservations</h1>
+    </span>
+    <div class="div-box-body bg-white">
+
+        <fieldset>
+            <legend align="center" style="background-color: #F62459">Réservations à valider ({{reservations.opened.length}})</legend>
+            {%if reservations.opened.length >0 %}
+                <table>
+                    <tr>
+                        <th style="width: 15%">Nom</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 10%">Heure</th>
+                        <th style="width: 35%">Réduction</th>
+                        <th style="width: 10%">Qté</th>
+                        <th style="width: 10%">Niveau</th>
+                        <th style="width: 15%">Action</th>
+                    </tr>
+                    {%for item in reservations.opened %}                    
+                        <tr>
+                            <td>{{item.name}}</td>
+                            <td>{{item.reservation.date_created}}</td>
+                            <td>{{item.reservation.hour}}</td>
+                            <td>{{reservations.__.reductions[item.reservation.reduction]}}</td>
+                            <td>{{item.reservation.quantity}}</td>
+                            <td>{{item.level}}</td>
+                            <td style="background-color: #f62459; border: 1px #000 dashed">
+                                <a href="/r1/{{item.user_id}}/{{client._id}}">Accepter</a><br />
+                                <a href="/r0/{{item.user_id}}/{{client._id}}">Refuser</a>
+                            </td>
+                        </tr>                        
+                    {%endfor%}
+                </table>
+            {%else%}
+                <p>Aucun enregistrement</p>
+            {%endif %}
+        </fieldset>   
+        <p>&nbsp;</p>        
+        <fieldset>
+            <legend align="center" style="background-color: #0000ff">Réservations validées ({{reservations.validated.length}})</legend>
+            {%if reservations.validated.length >0 %}
+                <table>
+                    <tr>
+                        <th style="width: 15%">Nom</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 15%">H</th>
+                        <th style="width: 40%">Réduc°</th>
+                        <th style="width: 15%">Qté</th>
+                    </tr>
+                    {%for item in reservations.validated %}                    
+                        <tr>
+                            <td>{{item.name}}&nbsp;{{item.firstname}}</td>
+                            <td>{{item.reservation.date_created}}</td>
+                            <td>{{item.reservation.hour}}</td>
+                            <td>{{reservations.__.reductions[item.reservation.reduction]}}</td>
+                            <td>{{item.reservation.quantity}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                </table>
+            {%else%}
+                <p>Aucun enregistrement</p>
+            {%endif %}
+
+        </fieldset>
+        <p>&nbsp;</p>
+        <fieldset>
+            <legend align="center">Réservations refusées ({{reservations.refused.length}})</legend>                     
+            {%if reservations.refused.length >0 %}
+                <table>
+                    <tr>
+                        <th style="width: 15%">Nom</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 10%">H</th>
+                        <th style="width: 30%">Réduc°</th>
+                        <th style="width: 10%">Qté</th>
+                        <th style="width: 30%">Motif</th>
+                    </tr>
+                    {%for item in reservations.refused %}                    
+                        <tr>
+                            <td>{{item.name}}&nbsp;{{item.firstname}}</td>
+                            <td>{{item.reservation.date_created}}</td>
+                            <td>{{item.reservation.hour}}</td>
+                            <td>{{__.reductions[item.reservation.reduction]}}</td>
+                            <td>{{item.reservation.quantity}}</td>
+                            <td>{{reservations.__.reasons[item.reservation.reason]}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                </table>
+            {%else%}
+                <p>Aucun enregistrement</p>
+            {%endif %}            
+        </fieldset>            
+        <p>&nbsp;</p>
+        <fieldset>
+            <legend align="center">Réservations en fin de validité ({{reservations.closed.length}})</legend>                       
+            {%if reservations.closed.length >0 %}
+                <table>
+                    <tr>
+                        <th style="width: 15%">Nom</th>
+                        <th style="width: 15%">Date</th>
+                        <th style="width: 15%">H</th>
+                        <th style="width: 40%">Réduc°</th>
+                        <th style="width: 15%">Qté</th>
+                    </tr>
+                    {%for item in reservations.closed %}                    
+                        <tr>
+                            <td>{{item.name}}&nbsp;{{item.firstname}}</td>
+                            <td>{{item.reservation.date_created}}</td>
+                            <td>{{item.reservation.hour}}</td>
+                            <td>{{reservations.__.reductions[item.reservation.reduction]}}</td>
+                            <td>{{item.reservation.quantity}}</td>
+                        </tr>                                                                
+                    {%endfor%}
+                </table>
+            {%else%}
+                <p>Aucun enregistrement</p>
+            {%endif %}            
+        </fieldset>                         
+    </div>
+</div>

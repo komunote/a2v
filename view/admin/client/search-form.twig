@@ -1,0 +1,57 @@
+<span class="ariane-header">
+    <h1><a href="/admin">Accueil</a> -> <a href="/admin/client">Clients</a> -> Rechercher</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>Recherche par critère</h1>
+        </span>
+        <div class="div-box-body bg-white">
+            <form action="/admin/client/search" method="post">            
+                <input type="text" name="company" placeholder="Nom de l'entreprise"/>
+                <input type="email" name="email" placeholder="email"/><br />
+                <input type="text" name="city" placeholder="Ville"/> 
+                <input type="text" name="postalcode" placeholder="Code postal" /><br />
+                
+                <select name="category">                    
+                    <option value="">Choisir une catégorie</option>
+                    <option value="1" selected="selected">Restaurant</option>                    
+                    <option value="2">Café/Pub</option>
+                    <!--<option value="Pub/Restaurant">Pub/Restaurant</option>-->                    
+                </select>
+                <select name="admin_creation">
+                    <option value="admin" selected="selected">Commercial</option>
+                    <option value="anthony">Anthony</option>
+                    <option value="eric.meou">Eric Méou</option>
+                    <!--<option value="Pub/Restaurant">Pub/Restaurant</option>-->                    
+                </select><br />
+               
+                <input type="submit" class="btn-form btn-form-p" value="rechercher" />
+            </form>
+        </div>
+    </span>
+
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>Recherche à proximité</h1>
+        </span>
+        <div class="div-box-body bg-white">
+            <form action="/admin/client/search-nearby" method="post" id="form-search-nearby">        
+                <label>Autour de moi</label>
+                <select name="range" id="select-range">
+                    <option value="0">jusqu'à une distance de</option>
+                    <option value="1000">1 km</option>
+                    <option value="2000">2 km</option>
+                    <option value="5000">5 km</option>
+                    <option value="10000">10 km</option>
+                    <option value="20000">20 km</option>
+                    <option value="50000">50 km</option>
+                    <option value="100000">100 km</option>
+                    <option value="500000">500 km</option>        
+                </select>    
+                <!--<input type="submit" class="btn-form btn-form-p" value="rechercher" />-->
+            </form>
+        </div>
+    </span>
+</div>

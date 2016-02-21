@@ -1,0 +1,6 @@
+{% if admin is defined %}  
+    {% include 'admin/prospect/index.twig' %} 
+{% else %}
+    {% include 'admin/login-form.twig' %} 
+{% endif %}
+

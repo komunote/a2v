@@ -1,0 +1,87 @@
+<div id="alert-add-room" class="white-popup mfp-hide" style="text-align: center;">
+    <p style="color:#ff0000">Ajouter une salle</p><br />
+    <form action="client/room-add" method="post">
+        <label>Nom de la salle</label>
+        <input type="text" name="name" value="" required="required"/>
+        <label>Nb de couverts total de la salle accordés pour <span class="important">autour2vous</span></label>
+        <input type="number" name="capacity" value="" required="required" min="2" max="200"/>                
+        <label>Zone fumeur</label>
+        <input type="checkbox" name="smoking" value="1"/>                
+        <input type="submit" class="btn-form btn-form-p" value="Ajouter" />
+    </form>
+</div>
+
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>Configurer mes salles</h1>
+    </span>
+    <div class="div-box-body bg-white">
+        <div class="header" style="color:#ff0000;">{{message}}</div>
+
+        {%if client.capacity > 0 %}
+        <div class="legend-room-add" align="center">Mes salles, occupation/capacité : {{client.occupation}}/{{client.capacity}}</div>
+        {%endif%}
+        <p>&nbsp;</p>
+        <div>
+            <span class="legend-add btn-add-room">[+] Ajouter une salle</span>
+            <p>&nbsp;</p>
+        </div>
+        <p>&nbsp;</p>
+        {%for room in rooms %}    
+            <fieldset class="div-room">
+                <p>&nbsp;</p>
+                <legend><b>{{room.name}}</b> : {{room.occupation}}/{{room.capacity}}{%if room.smoking %}&nbsp;<span class="important">zone fumeur</span>{%else%}, zone non fumeur{%endif%}</legend>
+                <p>&nbsp;</p>
+                {%for table in room.tables %}    
+                    <p>Table de {{table.capacity}} couverts <br />x {{table.quantity}}</p>
+                    {%for q in 1..table.quantity %}  
+                    <div class="div-room-table">
+                        {%for c in 1..table.capacity %}  
+                            <span class="btn btn-restaurant"></span>&nbsp;
+                        {%endfor%}   
+                    </div>
+                    {%endfor%}   
+                    <p>&nbsp;</p>
+                {%endfor%}                
+
+                {%if room.capacity > room.occupation %}
+                    <p>&nbsp;</p>
+                    <div>
+                        <span class="legend-add">[+] Ajouter un type de table</span>
+                        <p>&nbsp;</p>
+                        <form action="client/table-add" method="post" style="display:none;">                            
+                            <label>Combien de couverts à cette table ?</label>
+                            <input type="number" name="capacity" value="" required="required" min="2" max="40"/>
+                            <label>Combien de ce type de table dans la salle ?</label>
+                            <input type="number" name="quantity" value="" required="required" min="1" max="100"/><br />
+                            <input type="hidden" name="room[name]" value="{{room.name}}"/>
+                            <input type="hidden" name="room[capacity]" value="{{room.capacity}}" />
+                            <input type="submit" class="btn-form btn-form-p" value="Ajouter" />
+                        </form>
+                    </div>
+                {%endif%}
+
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <div>
+                    <span class="legend-remove">[-] Supprimer toutes les tables</span>
+                    <p>&nbsp;</p>
+                    <form action="client/table-remove-all" method="post" style="display:none;">                            
+                        <input type="hidden" name="name" value="{{room.name}}"/>
+                        <input type="submit" class="btn-form btn-form-p" value="confirmer la suppression" />
+                    </form>
+                </div>
+                <p>&nbsp;</p>                    
+                <div>
+                    <span class="legend-remove">[-] Supprimer la salle</span>
+                    <p>&nbsp;</p>
+                    <form action="client/room-remove" method="post" style="display:none;">                            
+                        <input type="hidden" name="name" value="{{room.name}}"/>
+                        <input type="submit" class="btn-form btn-form-p" value="confirmer la suppression" />
+                    </form>
+                </div>
+                <p>&nbsp;</p>
+            </fieldset>
+        {%endfor%}                       
+    </div>
+</div>

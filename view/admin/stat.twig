@@ -1,0 +1,25 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> {{__("Statistiques")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Utilisateurs")}}</h1>
+        </span>        
+        <table>
+            <tr><td>Nb users (Total)</td><td>{{stat.count}}</td></tr>
+            <tr><td>Nb users (validés)</td><td>{{stat.validated}}</td></tr>
+            <tr><td>Nb users (avec photo)</td><td>{{stat.with_photo}}</td></tr>
+        </table>
+        <p>&nbsp;</p>
+        <table>
+            <tr><td>Nb users (hétéros hommes)</td><td>{{stat.count_straight_men}}</td></tr>
+            <tr><td>Nb users (hétéros femmes)</td><td>{{stat.count_straight_women}}</td></tr>
+            <tr><td>Nb users (gay)</td><td>{{stat.count_gay}}</td></tr>
+            <tr><td>Nb users (lesbiennes)</td><td>{{stat.count_lesbian}}</td></tr>
+            <tr><td>Nb users (peu importe)</td><td>{{stat.count_whatever}}</td></tr>
+        </table>
+        <p>&nbsp;</p>
+    </span>
+</div>

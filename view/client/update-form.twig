@@ -1,0 +1,551 @@
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>{{__("Gestion du compte")}}</h1>
+    </span>
+    <div class="div-box-body bg-white">
+        <h1>{{message}}</h1>
+
+        <form action="/client/update" method="post" class="update-form">
+
+            <fieldset>
+                <legend style="text-align: center;">{{__("Statut")}}</legend>             
+                {% if client.is_privilege == 1 %}
+                    <p style="color:#F62459;">{{client.company}} : client <b>Privilège</b></p>
+                {%endif%}
+                {% if client.status == 0 %}
+                    <p>{{client.company}}</p>
+                    <p>Etape : 1 / 2</p>
+                    <label style="color:#0000ff;">En cours de validation. Prélèvement non effectué actuellement. Aucune réservation n'est possible à ce stade.</label>
+                {% elseif client.status == 1 %}                    
+                    <label style="color:#F62459;">{{client.company}} : Compte validé</label>
+                {% elseif client.status == -1 %}                    
+                    <label style="color:#ff0000;">{{client.company}} : Compte suspendu temporairement</label>
+                {% elseif client.status == -2 %}
+                    <label style="color:#ff0000;">{{client.company}} : Compte supprimé</label>
+                {%endif%}                
+                <br />               
+
+                <p>Une question ?</p>
+                <p>Un numéro : 07 88 50 41 57</p>
+            </fieldset>
+
+            <fieldset style="border: 2px dotted #F62459">
+                <legend class="fieldset-toggle" style="text-align: center;;background-color: #F62459">{{__("Jours et horaires d'ouverture")}}</legend>            
+                <div class="fieldset-div" style="display:none;">
+                    <table class="table-opening">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Jour</th>
+                                <th style="width: 10%;">Ouvert ?</th>
+                                <th style="width: 40%;">Horaires midi</th>
+                                <th style="width: 40%;">Horaires soir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for i, item in weekday %}
+                                <tr num="{{i}}">
+                                    <td>{{item}}</td>
+                                    <td>
+                                        <input type="checkbox" name="opening[{{i}}][i]" value="{{i}}" {% if client.opening[i]['noon_start'] is not empty or client.opening[i]['noon_end'] is not empty or client.opening[i]['evening_start'] is not empty or client.opening[i]['evening_end'] is not empty %}checked="checked"{% endif %}/>
+                                    </td>
+                                    <td class="opening-noon">
+                                        {% if client.opening[i]['i'] == i%}                                                                                
+                                            {% if client.opening[i]['noon_start'] is empty or client.opening[i]['noon_end'] is empty %}
+                                                <span>fermé</span>
+                                            {%else%}
+                                                de {{client.opening[i]['noon_start']}} à {{client.opening[i]['noon_end']}}   
+                                                <input type="hidden" name="opening[{{i}}][noon_start]" value="{{client.opening[i]['noon_start']}}" />
+                                                <input type="hidden" name="opening[{{i}}][noon_end]" value="{{client.opening[i]['noon_end']}} "/>
+                                            {% endif %}                                    
+                                        {%else%}
+                                            <span>fermé</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="opening-evening">
+                                        {% if client.opening[i]['i'] == i %}
+
+                                            {% if client.opening[i]['evening_start'] is empty or client.opening[i]['evening_end'] is empty %}
+                                                <span>fermé</span>
+                                            {%else%}
+                                                de {{client.opening[i]['evening_start']}} à {{client.opening[i]['evening_end']}}
+                                                <input type="hidden" name="opening[{{i}}][evening_start]" value="{{client.opening[i]['evening_start']}}" />
+                                                <input type="hidden" name="opening[{{i}}][evening_end]" value="{{client.opening[i]['evening_end']}} "/>
+                                            {% endif %}                                        
+                                        {%else%}
+                                            <span>fermé</span>
+                                        {% endif %}                                    
+                                    </td>
+                                </tr>     
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />    
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>                
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>
+
+
+            <fieldset style="border: 2px dotted #F62459">
+                <legend class="fieldset-toggle" style="text-align: center;background-color: #F62459;">{{__("Description de l'établissement")}}</legend>                
+                <div class="fieldset-div" {% if client.status != 0 %}style="display:none;"{%endif%}>
+                    <label>{{__("Description en quelques lignes")}}</label>
+                    <textarea name="description" placeholder="{{__("Description")}}" required="required">{{client.description}}</textarea>
+                    <label>{{__("Accès (route, métro etc)")}}</label>
+                    <input type="text" name="access" value="{{client.access}}" />                
+                    {% if client.category ==1 %}
+                        <label>{{__("Premier menu à partir de X €")}}</label>
+                        <input type="number" name="price_min" value="{{client.price_min}}"  required="required"/>                
+                        <label>{{__("Nom du chef")}}</label> 
+                        <input type="text" name="chef" value="{{client.chef}}"/><br />                
+                        <label>{{__("Plat du jour")}}</label>                     
+                        <textarea name="dish_day">{{client.dish_day}}</textarea>                
+                        <label>{{__("Menus")}}</label>                     
+                        <label>exemple : menu découverte : entrée + plat 15 €</label>
+                        <textarea name="menus" required="required">{{client.menus}}</textarea>
+
+                        <label>{{__("Entrées")}}</label>                    
+                        <label>exemple : salade landaise 12 €</label>
+                        <textarea name="starts" required="required">{{client.starts}}</textarea>                
+
+                        <label>{{__("Plats à la carte")}}</label>                    
+                        <label>exemple : magret de canard au miel 17 €</label>
+                        <textarea name="dishes" required="required">{{client.dishes}}</textarea>                
+                        <label>{{__("Desserts")}}</label>                     
+                        <label>exemple : tiramisu fait maison 6 €</label>
+                        <textarea name="desserts" required="required">{{client.desserts}}</textarea>                
+                        <label>{{__("Boissons")}}</label>                     
+                        <label>exemple : Vin Château-neuf du Pape 16 €</label>
+                        <textarea name="drinks">{{client.drinks}}</textarea>                
+                        <label>{{__("Etablissement tout BIO ?")}}</label>     
+                        <label>Envoyez-nous votre certificat afin que nous validions ce label (30 € HT)</label>
+                        {% if client.organic %}
+                            <input type="checkbox" name="organic" checked="checked" value="1"  disabled="disabled"/>
+                        {% else %}
+                            <input type="checkbox" name="organic" value="1" disabled="disabled"/>
+                        {%endif%}                                
+
+                        <label>{{__("Etablissement Tout fait maison ?")}}</label>                
+                        <label>Envoyez-nous votre certificat afin que nous validions ce label (30 € HT)</label>
+                        {% if client.home_made %}
+                            <input type="checkbox" name="home_made" checked="checked" value="1" disabled="disabled"/>
+                        {% else %}
+                            <input type="checkbox" name="home_made" value="1" disabled="disabled"/>
+                        {%endif%}
+                    {%endif%}
+                    {% if client.category ==2 %}
+                        <fieldset>
+                            <label>{{__("Boissons")}}</label>
+                            <textarea name="drinks" required="required">{{client.prestations.drinks}}</textarea>
+                        </fieldset>
+                    {%endif%}     
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />    
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>                
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+" {% if client.status == 0 %}style="display:none;"{%endif%}/>
+            </fieldset>
+
+            {% if client.status == 0 and client.signature is null%}
+                <fieldset style="border-color: #F62459;" class="float">
+                    <legend style="background-color: #F62459; text-align: center;">{{__("Mandat SEPA")}}<a href="http://www.abe-infoservice.fr/banque/fonctionnement-du-compte/le-code-bic-et-le-code-iban.html" target="_blank"><span class="menu btn btn-info"></span></a></legend>
+
+                    <label>{{__("SIRET")}}</label>
+                    <input type="text" placeholder="{{__("SIRET")}}" value="{{client.siret}}" required="required" pattern="[0-9]{14}" maxlength="14"/>
+                    <label>{{__("APE")}}</label>
+                    <input type="text" placeholder="{{__("APE")}}" value="{{client.ape}}" required="required" pattern="[0-9A-Za-z]{5}" maxlength="5"/>
+                    <label>RIB pour prélèvement automatique </label><br />
+                    <label>IBAN</label>
+                    <input type="text" name="iban" value="{{client.iban}}" class="iban" maxlength="34" required="required"/>
+                    <label>BIC / SWIFT</label>
+                    <input type="text" name="bic" value="{{client.bic}}" class="bic" maxlength="11" required="required"/><br />
+                    <br />
+                    <label>Formulaire mandat SEPA : <a href="/static/pdf/sepa.pdf" target="_blank" style="color:#0000ff;">ici</a></label>                
+                    <br />
+                    {% if client.sepa is not null %}                        
+                        <label style="color: #0000ff;">Nous avons bien reçu le mandat SEPA. Vérification en cours.</label>
+                    {%else%}
+                        <label style="color: #F62459;">Remplissez, puis scannez ou photographiez le mandat SEPA puis téléchargez-le directement.</label>                        
+                    {%endif%}
+
+                    <div id="form-sepa-picture">
+                        <div class="thumb">
+                            {% if client.sepa is not null  %}<img src="{{client.sepa}}" style="width:200px;height:auto;"/>{%endif%}
+                        </div><br />
+                        <p>Pivoter l'image</p>
+                        <input type="checkbox" class="rotate" value="1" />
+                        <input type="file" accept=".jpg, .jpeg, .png" name="image" />
+                        <input type="hidden" name="sepa" id="sepa-picture" />
+                        <input type="submit" class="btn-form btn-form-p" value="{{__("envoyer")}}" />            
+                    </div>                                               
+
+                    {% if client.sepa is null %} 
+                        <br /><p>ou</p><br />
+                        <p style="color:#F62459;">renvoyez le mandat SEPA à cette adresse :</p><br />
+                        <label>autour2vous SAS</label>
+                        <label>Mas Granier chemin des Lauriers</label>
+                        <label>13150 Tarascon</label>
+                    {%endif%}
+
+                </fieldset>
+            {%endif%} 
+
+            {% if client.status == 0 %}
+                <fieldset class="float">
+                    <legend align="center">Total à prélever</legend>
+                    <table class="table-paiement-mode">                    
+                        {% if client.registration.mode == 1 %}
+                            <tr><td>Formule <b>Economique</b></td><td>100 € HT</td></tr>
+                        {% elseif client.registration.mode == 7 %}
+                            <tr><td>Formule <b>Privilège</b></td><td>200 € HT</td></tr>
+                        {% else%}    
+                            <tr><td>Formule <b>Gratuite</b></td><td>0 € HT</td></tr>
+                        {%endif%}                
+                        {% if client.registration.training > 0 %}
+                            <tr><td><b>Formation</b></td><td>100 € HT</td></tr>
+                        {%endif%}
+
+                        {% if client.registration.mode == 1 and client.training == 100%}
+                            <tr class="total-ht"><td>Total HT</td><td>200 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>40 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>240 € TTC</b></td></tr>
+                                    {% elseif client.registration.mode == 1 and client.training != 100%}
+                            <tr class="total-ht"><td>Total HT</td><td>100 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>20 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>120 € TTC</b></td></tr>             
+                                    {% elseif client.registration.mode == 7 and client.training == 100%}
+                            <tr class="total-ht"><td>Total HT</td><td>300 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>60 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>360 € TTC</b></td></tr>
+                                    {% elseif client.registration.mode == 7 and client.training != 100%}
+                            <tr class="total-ht"><td>Total HT</td><td>200 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>40 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>240 € TTC</b></td></tr>
+                                    {% elseif client.registration.mode == 0 and client.training == 100%}
+                            <tr class="total-ht"><td>Total HT</td><td>100 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>20 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>120 € TTC</b></td></tr>
+                                    {% else %}
+                            <tr class="total-ht"><td>Total HT</td><td>0 € HT</td></tr>
+                            <tr class="total-tva"><td>Total TVA</td><td>0 € HT</td></tr>
+                            <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>0 € TTC</b></td></tr>
+                                    {%endif%}                
+                    </table>
+                </fieldset>
+            {%endif%} 
+
+            <fieldset class="float">
+                <legend style="text-align: center;">{{__("Identité")}}</legend> 
+                <label>{{__("Nom de l'entreprise")}}</label> 
+                <input type="text" name="company" value="{{client.company}}" required="required" />            
+                <label>{{__("Site web de l'entreprise")}}</label> 
+                <input type="url" name="website" value="{{client.website}}" />            
+                <label>{{__("Téléphone de l'entreprise")}}</label> 
+                <input type="tel" name="phone" value="{{client.phone}}" />            
+                <label>{{__("Nom du contact")}}</label> 
+                <input type="text" name="contact[name]" value="{{client.contact['name']}}" />            
+                <label>{{__("Fonction")}}</label> 
+                <input type="text" name="contact[function]" value="{{client.contact['function']}}" />            
+                <label>{{__("Téléphone portable du responsable")}}</label> 
+                <input type="tel" name="contact[phone]" value="{{client.contact.phone}}" maxlength="10"/>
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+            </fieldset>  
+
+            <fieldset style="border: 2px dotted #F62459;" class="float">
+                <legend style="text-align: center;background-color: #F62459">{{__("Votre réduction et vos conditions")}}</legend>
+                {% if client.category ==1 %}                    
+                    <select name="reduction" required="required">
+                        <option value="">{{__("Choisir le type de réduction")}}</option>                  
+                        <option value="0" {% if client.reduction == 0 %}selected="selected"{% endif %}>{{__("aucune")}}</option>
+                        <option value="1" {% if client.reduction == 1 %}selected="selected" {% endif %}>{{__("-10% sur la note")}}</option>
+                        <option value="2" {% if client.reduction == 2 %}selected="selected" {% endif %}>{{__("-15% sur la note")}}</option>
+                        <option value="3" {% if client.reduction == 3 %}selected="selected" {% endif %}>{{__("-20% sur la note")}}</option>
+                        <option value="4" {% if client.reduction == 4 %}selected="selected" {% endif %}>{{__("-25% sur la note")}}</option>
+                        <option value="5" {% if client.reduction == 5 %}selected="selected" {% endif %}>{{__("-30% sur la note")}}</option>
+                        <option value="6" {% if client.reduction == 6 %}selected="selected" {% endif %}>{{__("-35% sur la note")}}</option>
+                        <option value="7" {% if client.reduction == 7 %}selected="selected" {% endif %}>{{__("-40% sur la note")}}</option>
+                        <option value="8" {% if client.reduction == 8 %}selected="selected" {% endif %}>{{__("-45 sur la note")}}</option>
+                        <option value="9" {% if client.reduction == 9 %}selected="selected" {% endif %}>{{__("-50% sur la note")}}</option>
+                        <option value="32" {% if client.reduction == 32 %}selected="selected"{% endif %}>{{__("Vin offert")}}</option>
+                        <option value="33" {% if client.reduction == 33 %}selected="selected"{% endif %}>{{__("Champagne offert")}}</option>
+                    </select>
+                    <select name="condition" required="required">
+                        <option value="">{{__("Choisir le type de condition")}}</option>                  
+                        <option value="0" {% if client.condition == 0 %}selected="selected"{% endif %}>{{__("aucune")}}</option>
+                        <option value="1" {% if client.condition == 1 %}selected="selected"{% endif %}>{{__("toute la carte sauf menus")}}</option>
+                        <option value="101" {% if client.condition == 101 %}selected="selected"{% endif %}>{{__("note à partir de 15 €")}}</option>
+                        <option value="102" {% if client.condition == 102 %}selected="selected"{% endif %}>{{__("note à partir de 20 €")}}</option>
+                        <option value="103" {% if client.condition == 102 %}selected="selected"{% endif %}>{{__("note à partir de 30 €")}}</option>
+                        <option value="104" {% if client.condition == 104 %}selected="selected"{% endif %}>{{__("note à partir de 40 €")}}</option>
+                        <option value="105" {% if client.condition == 105 %}selected="selected"{% endif %}>{{__("note à partir de 50 €")}}</option>
+                        <option value="106" {% if client.condition == 106 %}selected="selected"{% endif %}>{{__("note à partir de 60 €")}}</option>
+                        <option value="107" {% if client.condition == 107 %}selected="selected"{% endif %}>{{__("note à partir de 80 €")}}</option>
+                        <option value="108" {% if client.condition == 108 %}selected="selected"{% endif %}>{{__("note à partir de 100 €")}}</option>
+                        <option value="109" {% if client.condition == 109 %}selected="selected"{% endif %}>{{__("note à partir de 120 €")}}</option>
+                        <option value="110" {% if client.condition == 110 %}selected="selected"{% endif %}>{{__("note à partir de 150 €")}}</option>
+                        <option value="111" {% if client.condition == 111 %}selected="selected"{% endif %}>{{__("note à partir de 200 €")}}</option>
+                        <option value="20" {% if client.condition == 20 %}selected="selected"{% endif %}>{{__("le midi")}}</option>
+                        <option value="21" {% if client.condition == 21 %}selected="selected"{% endif %}>{{__("le soir")}}</option>
+                        <option value="22" {% if client.condition == 22 %}selected="selected"{% endif %}>{{__("jusqu'à 19h00")}}</option>
+                        <option value="23" {% if client.condition == 23 %}selected="selected"{% endif %}>{{__("jusqu'à 19h30")}}</option>
+                        <option value="24" {% if client.condition == 24 %}selected="selected"{% endif %}>{{__("jusqu'à 20h00")}}</option>
+                        <option value="25" {% if client.condition == 25 %}selected="selected"{% endif %}>{{__("jusqu'à 20h30")}}</option>
+                        <option value="26" {% if client.condition == 26 %}selected="selected"{% endif %}>{{__("jusqu'à 21h00")}}</option>                        
+                    </select>
+                {%endif%}      
+
+                {% if client.category ==2 %}
+                    <select name="reduction" required="required">
+                        <option value="">{{__("Choisir le type de réduction")}}</option>                  
+                        <option value="0" {% if client.reduction == 0 %}selected="selected"{% endif %}>{{__("aucune")}}</option>
+                        <option value="1" {% if client.reduction == 1 %}selected="selected" {% endif %}>{{__("-10% sur la note")}}</option>
+                        <option value="2" {% if client.reduction == 2 %}selected="selected" {% endif %}>{{__("-15% sur la note")}}</option>
+                        <option value="3" {% if client.reduction == 3 %}selected="selected" {% endif %}>{{__("-20% sur la note")}}</option>
+                        <option value="4" {% if client.reduction == 4 %}selected="selected" {% endif %}>{{__("-25% sur la note")}}</option>
+                        <option value="5" {% if client.reduction == 5 %}selected="selected" {% endif %}>{{__("-30% sur la note")}}</option>
+                        <option value="6" {% if client.reduction == 6 %}selected="selected" {% endif %}>{{__("-35% sur la note")}}</option>
+                        <option value="7" {% if client.reduction == 7 %}selected="selected" {% endif %}>{{__("-40% sur la note")}}</option>
+                        <option value="8" {% if client.reduction == 8 %}selected="selected" {% endif %}>{{__("-45 sur la note")}}</option>
+                        <option value="9" {% if client.reduction == 9 %}selected="selected" {% endif %}>{{__("-50% sur la note")}}</option>
+                        <option value="30" {% if client.reduction == 30 %}selected="selected" {% endif %}>{{__("1 boisson offerte")}}</option>
+                        <option value="31" {% if client.reduction == 31 %}selected="selected" {% endif %}>{{__("2 boissons offertes")}}</option>                        
+                    </select>
+                    <select name="condition" required="required">
+                        <option value="">{{__("Choisir le type de condition")}}</option>                  
+                        <option value="0" {% if client.condition == 0 %}selected="selected"{% endif %}>{{__("aucune")}}</option>                        
+                        <option value="101" {% if client.condition == 101 %}selected="selected"{% endif %}>{{__("note à partir de 15 €")}}</option>
+                        <option value="102" {% if client.condition == 102 %}selected="selected"{% endif %}>{{__("note à partir de 20 €")}}</option>
+                        <option value="103" {% if client.condition == 102 %}selected="selected"{% endif %}>{{__("note à partir de 30 €")}}</option>
+                        <option value="104" {% if client.condition == 104 %}selected="selected"{% endif %}>{{__("note à partir de 40 €")}}</option>
+                        <option value="105" {% if client.condition == 105 %}selected="selected"{% endif %}>{{__("note à partir de 50 €")}}</option>
+                        <option value="106" {% if client.condition == 106 %}selected="selected"{% endif %}>{{__("note à partir de 60 €")}}</option>
+                        <option value="107" {% if client.condition == 107 %}selected="selected"{% endif %}>{{__("note à partir de 80 €")}}</option>
+                        <option value="108" {% if client.condition == 108 %}selected="selected"{% endif %}>{{__("note à partir de 100 €")}}</option>
+                        <option value="109" {% if client.condition == 109 %}selected="selected"{% endif %}>{{__("note à partir de 120 €")}}</option>
+                        <option value="110" {% if client.condition == 110 %}selected="selected"{% endif %}>{{__("note à partir de 150 €")}}</option>
+                        <option value="111" {% if client.condition == 111 %}selected="selected"{% endif %}>{{__("note à partir de 200 €")}}</option><option value="22" {% if client.condition == 22 %}selected="selected"{% endif %}>{{__("jusqu'à 19h00")}}</option>
+                        <option value="23" {% if client.condition == 23 %}selected="selected"{% endif %}>{{__("jusqu'à 19h30")}}</option>
+                        <option value="24" {% if client.condition == 24 %}selected="selected"{% endif %}>{{__("jusqu'à 20h00")}}</option>
+                        <option value="25" {% if client.condition == 25 %}selected="selected"{% endif %}>{{__("jusqu'à 20h30")}}</option>
+                        <option value="26" {% if client.condition == 26 %}selected="selected"{% endif %}>{{__("jusqu'à 21h00")}}</option>
+                        <option value="30" {% if client.condition == 30 %}selected="selected"{% endif %}>{{__("pour 1 boisson achetée")}}</option>
+                        <option value="31" {% if client.condition == 31 %}selected="selected"{% endif %}>{{__("pour 2 boissons achetées")}}</option>
+                        <option value="32" {% if client.condition == 32 %}selected="selected"{% endif %}>{{__("pour 3 boissons achetées")}}</option>
+                        <option value="33" {% if client.condition == 33 %}selected="selected"{% endif %}>{{__("pour 4 boissons achetées")}}</option>                                                
+                    </select>    
+                {%endif%}
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />    
+            </fieldset>
+
+            <fieldset style="border-color: #0000ff;" class="float">
+                <legend style="text-align: center;background-color: #0000ff;">{{__("Mode de réservation")}}</legend>                                 
+                {% if client.registration.mode == 1 %}
+                    <label>Formule <b>Economique</b></label>
+                    <hr />
+                    <p>0,70 € HT le midi</p>
+                    <p>1,20 € HT le Soir</p>
+                {% elseif client.registration.mode == 7 %}
+                    <label>Formule <b>Privilège</b></label>
+                    <hr />
+                    <p>0,50 € HT le midi</p>
+                    <p>1,00 € HT le Soir</p>
+                {% else%}
+                    <label>Formule <b>Gratuite</b></label>
+                    <hr />
+                    <p>1,50 € HT Midi et Soir</p>
+                {%endif%}                
+
+                {% if client.registration.training > 0 %}
+                    <p>avec formation autour2vous (un technicien va prendre reviendra vers vous pour convenir d'un rendez-vous)</p>
+                {%endif%}                                
+            </fieldset>                       
+
+            <fieldset class="float">
+                <legend style="text-align: center;">{{__("Signature du contrat")}}</legend> 
+                <label>Date : {{ client.date_creation|date("d/m/Y") }}</label>
+                <img src="{{client.signature}}" />
+            </fieldset>        
+
+            <fieldset style="border-color: #0000ff;" class="float">
+                <legend class="fieldset-toggle" style="text-align: center; background-color: #0000ff">{{__("Parrainage")}}</legend> 
+                <div class="fieldset-div" style="display:none;">
+                    <p>En parrainant un confrère vous pouvez gagner chacun un bon de réduction de 20 à 50 € par filleul :</p><br />
+                    <ul class="ul-fieldset">
+                        <li>20 € de réduction à valoir sur votre prochaine facture si votre filleul souscrit à l'offre <b>Economique</b></li>
+                        <li style="color:#F62459">50 € de réduction à valoir sur votre prochaine facture si votre filleul souscrit à l'offre limitée <b>Privilège</b></li>                
+                    </ul><br />
+
+                    <label>Etablissement du filleul :</label>
+                    <input type="text" name="sponsorship[company]" value="" />
+                    <label>Adresse email du filleul :</label>
+                    <input type="email" name="sponsorship[email]" value="" />
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("ajouter")}}" />    
+                    <br /><br />
+                    {% if client.sponsorship|length >0 %}
+                        <p>Liste des parrainages validés ou en cours : </p><br />
+                        <ul class="ul-fieldset">
+                            {%for item in client.sponsorship %}  
+                                <li>{{item.company}} : {{item.email}}</li>
+                                {%endfor%}
+                        </ul>
+                    {%endif%}  
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>
+
+            <fieldset style="border-color: #0000ff;" class="float">
+                <legend style="text-align: center;background-color: #0000ff;">{{__("Type de cuisine")}}</legend>             
+                <select name="cooking_type">
+                    <option value="">{{__("Choisir le type de réduction")}}</option>                  
+                    <option value="0" {% if client.cooking_type == 0 %}selected="selected"{% endif %}>{{__("Traditionnelle")}}</option>
+                    <option value="3" {% if client.cooking_type == 3 %}selected="selected" {% endif %}>{{__("Gastronomique")}}</option>
+                    <option value="12" {% if client.cooking_type == 12 %}selected="selected"{% endif %}>{{__("Végétarienne")}}</option>
+                    <option value="6" {% if client.cooking_type == 6 %}selected="selected" {% endif %}>{{__("Japonaise")}}</option>
+                    <option value="1" {% if client.cooking_type == 1 %}selected="selected" {% endif %}>{{__("Pizzéria")}}</option>
+                    <option value="2" {% if client.cooking_type == 2 %}selected="selected" {% endif %}>{{__("Crêperie")}}</option>
+                    <option value="4" {% if client.cooking_type == 4 %}selected="selected" {% endif %}>{{__("Restauration rapide")}}</option>
+                    <option value="5" {% if client.cooking_type == 5 %}selected="selected" {% endif %}>{{__("Asiatique")}}</option>                        
+                    <option value="7" {% if client.cooking_type == 7 %}selected="selected" {% endif %}>{{__("Indienne")}}</option>
+                    <option value="8" {% if client.cooking_type == 8 %}selected="selected" {% endif %}>{{__("Thailandaise")}}</option>                        
+                    <option value="9" {% if client.cooking_type == 9 %}selected="selected"{% endif %}>{{__("Américaine")}}</option>
+                    <option value="10" {% if client.cooking_type == 10 %}selected="selected"{% endif %}>{{__("Mexicaine")}}</option>                        
+                    <option value="11" {% if client.cooking_type == 11 %}selected="selected"{% endif %}>{{__("Italienne")}}</option>
+                    <option value="15" {% if client.cooking_type == 15 %}selected="selected"{% endif %}>{{__("Espagnole")}}</option>
+                    <option value="14" {% if client.cooking_type == 14 %}selected="selected"{% endif %}>{{__("Orientale")}}</option>
+                    <option value="13" {% if client.cooking_type == 13 %}selected="selected"{% endif %}>{{__("Grecque")}}</option>                        
+                </select>
+            </fieldset>
+
+            <fieldset class="float">
+                <legend class="fieldset-toggle" style="text-align: center;">{{__("Fermeture du restaurant")}}</legend>  
+                <div class="fieldset-div" style="display:none;">
+                    <label>{{__("Fermeture exceptionnelle ?")}}</label><br />
+                    <label>{{__("Date de fermeture")}}</label>
+                    <input type="date" name="closing_date" placeholder="aaaa-mm-dd" value="{{client.closing_date}}"/>
+                    <label>{{__("Date d'ouverture")}}</label>
+                    <input type="date" name="opening_date" placeholder="aaaa-mm-dd" value="{{client.opening_date}}"/>
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />    
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>                 
+
+            <fieldset class="float">
+                <legend class="fieldset-toggle" style="text-align: center;">{{__("Nous contacter pour modifier ces informations")}}</legend>
+                <div class="fieldset-div" style="display:none;">
+                    <label>{{__("Email de l'entreprise")}}</label>
+                    <input type="email" placeholder="{{__("Email de l'entreprise")}}" value="{{client.email}}" disabled="disabled"/>
+                    <label>{{__("Adresse de l'entreprise")}}</label>
+                    <input type="text" placeholder="{{__("Adresse de l'entreprise")}}" value="{{client.address}}" disabled="disabled"/><br />
+                    <label>{{__("Code postal de l'entreprise")}}</label>
+                    <input type="text" placeholder="{{__("Code postal de l'entreprise")}}" value="{{client.postalcode}}" disabled="disabled"/>
+                    <label>{{__("Ville de l'entreprise")}}</label>
+                    <input type="text" placeholder="{{__("Ville de l'entreprise")}}" value="{{client.city}}" disabled="disabled"/>
+
+                    <label>{{__("RUM référence unique de mandat")}}</label>
+                    <input type="text" placeholder="{{__("numéro communiqué ultérieurement")}}" value="{{client.rum}}" disabled="disabled"/>
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>  
+
+            <fieldset class="float" style="border: 2px dotted #F62459">
+                <legend class="fieldset-toggle" style="text-align: center;;background-color: #F62459">{{__("Modes de paiement acceptés")}}</legend>                      
+                <div class="fieldset-div" style="display:none;">
+                    <table class="table-paiement-mode">
+                        <tr><td style="width:50%"><input type="checkbox" name="payment_mode[cheque]" value="1"{%if client.payment_mode.cheque %}checked="checked"{%endif%} /></td><td style="width:50%">{{__("Chèques")}}</td></tr>
+                        <tr><td><input type="checkbox" name="payment_mode[cb]" value="1"{%if client.payment_mode.cb %}checked="checked"{%endif%} /></td><td>{{__("Carte Bleue")}}</td></tr>
+                        <tr><td><input type="checkbox" name="payment_mode[visa]" value="1"{%if client.payment_mode.visa %}checked="checked"{%endif%} /></td><td>{{__("VISA")}}</td></tr>
+                        <tr><td><input type="checkbox" name="payment_mode[mastercard]" value="1"{%if client.payment_mode.mastercard %}checked="checked"{%endif%} /></td><td>{{__("MasterCard")}}</td></tr>
+                        <tr><td><input type="checkbox" name="payment_mode[americanexpress]" value="1"{%if client.payment_mode.americanexpress %}checked="checked"{%endif%} /></td><td>{{__("American Express")}}</td></tr>
+                        <tr><td><input type="checkbox" name="payment_mode[ticket]" value="1"{%if client.payment_mode.ticket %}checked="checked"{%endif%} /></td><td>{{__("Tickets/Chèques restaurant")}}</td></tr>
+                    </table>
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />                
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>
+
+            <fieldset class="float">
+                <legend class="fieldset-toggle" style="text-align: center;">{{__("Langues parlées par le personnel")}}</legend>                
+                <div class="fieldset-div" style="display:none;">
+                    <table class="table-paiement-mode">
+                        <tr><td style="width:50%"><input type="checkbox" name="languages[en]" value="1"{%if client.languages.en %}checked="checked"{%endif%} /></td><td style="width:50%">{{__("Anglais")}}</td></tr>
+                        <tr><td><input type="checkbox" name="languages[es]" value="1"{%if client.languages.es %}checked="checked"{%endif%} /></td><td>{{__("Espagnol")}}</td></tr>
+                        <tr><td><input type="checkbox" name="languages[it]" value="1"{%if client.languages.it %}checked="checked"{%endif%} /></td><td>{{__("Italien")}}</td></tr>
+                        <tr><td><input type="checkbox" name="languages[de]" value="1"{%if client.languages.de %}checked="checked"{%endif%} /></td><td>{{__("Allemand")}}</td></tr>
+                        <tr><td><input type="checkbox" name="languages[jp]" value="1"{%if client.languages.jp %}checked="checked"{%endif%} /></td><td>{{__("Japonais")}}</td></tr>
+                        <tr><td><input type="checkbox" name="languages[ch]" value="1"{%if client.languages.ch %}checked="checked"{%endif%} /></td><td>{{__("Chinois")}}</td></tr>
+                    </table>
+                    <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+                    <br /><br />
+                    <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+                </div>
+                <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+            </fieldset>                               
+        </form>
+        <br />
+
+        <fieldset>
+            <legend class="fieldset-toggle" style="text-align: center;">{{__("Photos")}}</legend>
+            <div class="fieldset-div" style="display:none;">
+                <label>{{__("Photo de couverture")}}</label>
+                <form id="form-picture-1" action="/client/update/picture" method="post" enctype='multipart/form-data'>
+                    {% if client.pictures[1].filename is defined  %}
+                        <img src="/static/client/image/{{client._id}}/thumb_{{client.pictures[1].filename}}"/><br />
+                    {%endif%}                        
+                    <input type="hidden" name="number" value="1"/>                        
+                    <input type="file" accept=".jpg, .jpeg" name="image" required="required"/>                    
+                    <input type="submit" class="btn-form btn-form-p form-picture-submit" value="{{__("envoyer")}}" />
+                </form><hr/>
+                <label>{{__("Photo n°2")}}</label>
+                <form id="form-picture-2" action="/client/update/picture" method="post" enctype='multipart/form-data'>
+                    {% if client.pictures[2].filename is defined %}
+                        <img src="/static/client/image/{{client._id}}/thumb_{{client.pictures[2].filename}}"/><br />
+                    {%endif%}                        
+                    <input type="hidden" name="number" value="2"/>                        
+                    <input type="file" accept=".jpg, .jpeg" name="image" required="required"/>                    
+                    <input type="submit" class="btn-form btn-form-p form-picture-submit" value="{{__("envoyer")}}" />
+                </form><hr style=""/>
+                <label>{{__("Photo n°3")}}</label>
+                <form id="form-picture-3" action="/client/update/picture" method="post" enctype='multipart/form-data'>
+                    {% if client.pictures[3].filename is defined  %}
+                        <img src="/static/client/image/{{client._id}}/thumb_{{client.pictures[3].filename}}"/><br />
+                    {%endif%}                        
+                    <input type="hidden" name="number" value="3"/>
+                    <input type="file" accept=".jpg, .jpeg" name="image" required="required"/>                    
+                    <input type="submit" class="btn-form btn-form-p form-picture-submit" value="{{__("envoyer")}}" />
+                </form><hr style=""/>
+                <label>{{__("Photo n°4")}}</label>
+                <form id="form-picture-4" action="/client/update/picture" method="post" enctype='multipart/form-data'>
+                    {% if client.pictures[4].filename is defined  %}
+                        <img src="/static/client/image/{{client._id}}/thumb_{{client.pictures[4].filename}}"/><br />
+                    {%endif%}                        
+                    <input type="hidden" name="number" value="4"/>
+                    <input type="file" accept=".jpg, .jpeg" name="image" required="required"/>                    
+                    <input type="submit" class="btn-form btn-form-p form-picture-submit" value="{{__("envoyer")}}" />
+                </form><hr style=""/>
+                <label>{{__("Photo n°5")}}</label>
+                <form id="form-picture-5" action="/client/update/picture" method="post" enctype='multipart/form-data'>
+                    {% if client.pictures[5].filename is defined  %}
+                        <img src="/static/client/image/{{client._id}}/thumb_{{client.pictures[5].filename}}"/><br />
+                    {%endif%}                        
+                    <input type="hidden" name="number" value="5"/>
+                    <input type="file" accept=".jpg, .jpeg" name="image" required="required"/>                    
+                    <input type="submit" class="btn-form btn-form-p form-picture-submit" value="{{__("envoyer")}}" />
+                </form>      
+                <div class="iframe"></div>    
+                <br /><br />
+                <input type="button" class="btn-form btn-form-p minimize-div" value="-"/>
+            </div>
+            <input type="button" class="btn-form btn-form-p toggle-div" value="+"/>
+        </fieldset>   
+
+    </div>
+</div>

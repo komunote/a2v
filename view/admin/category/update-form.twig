@@ -1,0 +1,18 @@
+<span class="ariane-header">
+    <h1><a href="/admin">{{__("Admin")}}</a> -> <a href="/admin/nomenclature">{{__("Nomenclature")}}</a> -> <a href="/admin/category">{{__("Catégories")}}</a> -> {{__("Modification d'une catégorie")}}</h1>
+</span>
+
+<div class="div-box-main"> 
+    <span class="div-box">
+        <span class="div-box-header">
+            <h1>{{__("Mise à jour de la catégorie")}}</h1>
+        </span>
+        <div class="div-box-body">  
+            <form action="/admin/category/update" method="post">            
+                <input type="text" name="name" placeholder="{{__("Nom de la catégorie")}}" value="{{category.name}}" required="required"/>
+                <input type="hidden" name="_id" value="{{category._id}}" />
+                <input type="submit" class="btn-form btn-form-p" value="{{__("modifier")}}" />
+            </form>
+        </div>
+    </span>
+</div>

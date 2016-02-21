@@ -1,0 +1,355 @@
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>Procédure d'inscription</h1>
+    </span>    
+
+    <div class="div-box-body bg-white">
+        <h2>Bienvenue dans votre interface Client</h2><br />
+        <p>Plus que quelques minutes avant de faire partie de l'aventure autour2vous !</p><br />
+        <p>Avant de poursuivre, merci de <b>rassembler les informations concernant votre établissement (SIRET, APE/NAF, RIB/IBAN)</b></p><br />
+        <!--<h2 style="color:#F62459;">Offre de lancement :</h2><br />
+        <p style="color:#F62459;"><b>12 mois en illimité</b> ! pour 52 € HT par mois, recevez autant de réservations que vous le souhaitez.</p>-->
+        <div>
+            <fieldset style="border-color: #F62459;">
+                <legend align="center" style="background-color:#F62459;">Catégorie de votre établissement</legend>
+                <select name="select-category" id="select-category">
+                    <option value="">Choisir la catégorie</option>                
+                    <option>----avec rendez-vous----</option>
+                    <option value="100" {% if 100 == client.category %}selected="selected"{% endif %}>Restaurant (toutes catégories</option>
+                    <option value="101" {% if 101 == client.category %}selected="selected"{% endif %}>Salon de coiffure</option>
+                    <option value="102" {% if 102 == client.category %}selected="selected"{% endif %}>Salon esthétique</option>
+                    <option value="103" {% if 103 == client.category %}selected="selected"{% endif %}>Spa/détente</option>
+                    <option value="104" {% if 104 == client.category %}selected="selected"{% endif %}>Salon de massage</option>
+                    <option value="105" {% if 105 == client.category %}selected="selected"{% endif %}>Plomberie</option>
+                    <option value="106" {% if 106 == client.category %}selected="selected"{% endif %}>Electricien</option>
+                    <option value="107" {% if 107 == client.category %}selected="selected"{% endif %}>Chauffagiste</option>
+                    <option value="108" {% if 108 == client.category %}selected="selected"{% endif %}>Garagiste</option>
+                    
+                    <option value="205" {% if 205 == client.category %}selected="selected"{% endif %}>Salon de thé</option>
+                    <option value="206" {% if 206 == client.category %}selected="selected"{% endif %}>Café</option>
+                    <option value="207" {% if 207 == client.category %}selected="selected"{% endif %}>Pub</option>
+                    <option value="208" {% if 208 == client.category %}selected="selected"{% endif %}>Traîteur</option>
+                    <option value="209" {% if 209 == client.category %}selected="selected"{% endif %}>Snack</option>
+                    <option value="210" {% if 210 == client.category %}selected="selected"{% endif %}>Pizzeria (à emporter)</option>
+                    <option value="211" {% if 211 == client.category %}selected="selected"{% endif %}>Kebab</option>
+                    <option value="212" {% if 212 == client.category %}selected="selected"{% endif %}>Boulangerie</option>
+                    <option value="213" {% if 213 == client.category %}selected="selected"{% endif %}>Pâtisserie</option>
+                    <option value="214" {% if 214 == client.category %}selected="selected"{% endif %}>Boulangerie/Pâtisserie</option>
+                    <option value="215" {% if 215 == client.category %}selected="selected"{% endif %}>Boucherie/Charcuterie</option>
+                    <option value="216" {% if 216 == client.category %}selected="selected"{% endif %}>Epicerie</option>
+                    <option value="217" {% if 217 == client.category %}selected="selected"{% endif %}>Epicerie fine</option>
+                    <option value="218" {% if 218 == client.category %}selected="selected"{% endif %}>Epicerie BIO</option>
+                    <option value="219" {% if 219 == client.category %}selected="selected"{% endif %}>Primeur</option>
+                    <option value="220" {% if 220 == client.category %}selected="selected"{% endif %}>Confiserie</option>                    
+                    <option value="224" {% if 224 == client.category %}selected="selected"{% endif %}>Menuisier</option>
+                    <option value="225" {% if 225 == client.category %}selected="selected"{% endif %}>Cordonier</option>                    
+                    <option value="227" {% if 227 == client.category %}selected="selected"{% endif %}>Opticien</option>                    
+                    <option value="228" {% if 228 == client.category %}selected="selected"{% endif %}>Boutique de chaussures</option>
+                    <option value="229" {% if 229 == client.category %}selected="selected"{% endif %}>Boutique de vêtements</option>
+                    <option value="230" {% if 230 == client.category %}selected="selected"{% endif %}>Librairie</option>                   
+                    <option value="231" {% if 231 == client.category %}selected="selected"{% endif %}>Fleuriste</option>
+                                 
+                    <!--<option value="200" {%if "Café/Pub" == client.category %}selected="selected"{% endif %}>Café/Pub</option>
+                    <option value="300" {%if "Hôtel" == client.category %}selected="selected"{% endif %}>Hôtel</option>
+                    <option value="301" {%if "Spa" == client.category %}selected="selected"{% endif %}>Spa</option>-->
+                </select>
+            </fieldset>
+        </div>
+        <form action="/client/subscribe" method="post" class="with-resa-form sigPad" {% if "Café/Pub" == client.category %}style="display:none;"{% endif %}>
+            <fieldset>
+                <legend align="center">Identité</legend>
+                <label>Nom de l'entreprise / raison sociale</label>
+                <input type="text" name="company" value="{{client.company}}" pattern="[0-9A-Za-z\s]{3,30}" required="required" />                                    
+                <label>SIRET (14 chiffres)</label> 
+                <p>Recherchez les informations de votre entreprise sur <a href="http://www.societe.com" target="_blank" style="color:#F62459">Societe.com</a></p>
+                <input type="text" name="siret" value="" required="required" pattern="[0-9]{14}" maxlength="14" />            
+                <label>Code APE/NAF</label> 
+                <input type="text" name="ape" value="" required="required" pattern="[0-9]{4}[A-Za-z]{1}" maxlength="5"/>            
+                <label>Téléphone de l'entreprise</label> 
+                <input type="tel" name="phone" value="{{client.phone}}" maxlength="10" required="required" pattern="[0]{1}[1-7]{1}[0-9]{8}"/>
+                <label>Adresse email</label>
+                <input type="email" name="email" value="{{client.email}}" required="required"/>
+            </fieldset>
+            <fieldset>
+                <legend align="center">Adresse</legend>
+                <label>Adresse postale :</label>                   
+                <br />
+                <p><b>{{client.address}}</b></p>
+                
+                <input type="hidden" name="admin_creation" value="{{client.admin_creation}}"/>
+                <input type="hidden" name="address" value="{{client.address}}"/>
+                <input type="hidden" name="postalcode" value="{{client.postalcode}}" />                            
+                <input type="hidden" name="city" value="{{client.city}}"/>
+                <input type="hidden" name="latitude" id="latitude-field" value=""/>
+                <input type="hidden" name="longitude" id="longitude-field" value=""/>
+                <br />
+                <p style="color:#F62459">Votre adresse est incorrecte ?</p>
+                <p style="color:#F62459">Un numéro : 07 88 50 41 57</p>
+            </fieldset>                                                                                                      
+
+            <fieldset style="border-color: #F62459;">
+                <legend align="center" style="background-color:#F62459;">L'offre d'autour2vous</legend>
+                <ul style="text-align: left; list-style: disc; padding-left:20px;">
+                    <li style="color:#F62459"><b>Offre : </b>Pour les 500 premiers clients et jusqu'au 30 avril 2015 23h59, exonération à vie garantie des frais annuels pour l'offre <b>Privilège</b></li>
+                    <li><b>Clarté : </b>payez à la réservation</li>
+                    <li style="color:#F62459"><b>Egalité : </b>compte premium pour tous</li>
+                    <!--<li>gestion de la salle et ses tables</li>
+                    <li>acceptation des réservations automatique en fonction du taux de remplissage</li>-->
+                    <li><b>Efficacité : </b>modification en temps réel et à volonté de votre fiche</li>
+                    <li style="color:#F62459"><b>Simplicité : </b>une interface ergonomique et accessible à tous et toutes sur PC, tablettes et mobiles</li>
+                    <li><b>Autonomie : </b>mettez en avant votre établissement autour2vous et restez maître de votre activité</li>
+                    <li style="color:#F62459"><b>Confiance : </b>en tant que partenaires, nous nous engageons à rester à votre écoute afin que vous puissiez disposer du meilleur service disponible sur le marché !</li>
+                    <li><b>Solidarité : </b>autour2vous s'engage à reverser 0,10 € par réservation à l'association <a href="http://www.miedepain.asso.fr/" target="_blank" style="color:#F62459"><b>La Mie de pain</b></a></li>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">Choississez votre formule</legend>
+                <table class="table-formule">
+                    <thead>
+                        <tr>
+                            <th style="width:10%">Formule</th>
+                            <th style="width:90%">Description</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="radio" class="radio-registration-mode" name="registration[mode]" value="0"/>Gratuite</td>
+                            <td>
+                                <p><b>Le midi :</b></p>
+                                <p><b>1,50 €</b> HT / réservation / pers.</p>
+                                <p><b>Le soir :</b></p>
+                                <p><b>1,50 €</b> HT / réservation / pers.</p>
+                                <p>Pas de frais annuels : 0 € / an</p>
+                                <p>Aucun engagement, prélèvement le 15 de chaque mois</p>
+                                <p>Changement d'offre <u>impossible</u> avant un an d'ancienneté.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="radio" class="radio-registration-mode" name="registration[mode]" value="1" checked="checked"/>Economique</td>
+                            <td>
+                                <p><b>Le midi :</b></p>
+                                <p><b>0,70 €</b> HT / réservation / pers.</p>
+                                <p><b>Le soir :</b></p>
+                                <p><b>1,20 €</b> HT / réservation / pers.</p>
+                                <p>Aucun engagement, 100 € HT / an</p>
+                                <p>Prélèvement le 15 de chaque mois</p>
+                                <p>Changement d'offre possible à tout moment</p>
+                                <p><b>Jusqu'à -53% de réduction par rapport à l'offre Gratuite</b></p>
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td style="color:#F62459"><input type="radio" class="radio-registration-mode" name="registration[mode]" value="7"/>Privilège</td>
+                            <td>
+                                <p><b>Le midi :</b></p>
+                                <p style="color:#F62459"><b>0,50 €</b> HT / réservation / pers.</p>
+                                <p><b>Le soir :</b></p>
+                                <p style="color:#F62459"><b>1,00 €</b> HT / réservation / pers.</p>
+                                <p>Aucun abonnement annuel ne vous sera facturé, <span style="color:#F62459">200 € à l'inscription uniquement !</span></p>
+                                <p>Prélèvement le 15 de chaque mois</p>                                
+                                <p style="color:#F62459"><span class="menu btn btn-info"></span>Pour les 500 premiers clients et jusqu'au 30 avril 2015 23h59, exonération à vie garantie des frais annuels !</p>
+                                <p><b>Jusqu'à -67% de réduction par rapport à l'offre Gratuite</b></p>
+                            </td>                                                        
+                        </tr>
+                    </tbody>
+                </table>      
+                <br />
+                <p style="color:#F62459"><span class="menu btn btn-info"></span>autour2vous s'engage à reverser 0,10 € par réservation à l'association La Mie de Pain</p>
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">Formation</legend> 
+                <p><i>(formation non obligatoire pour être opérationnel)</i></p>
+                <input type="checkbox" class="checkbox-registration-training" name="registration[training]" value="1" />
+                <p>Pour 100 € HT, je souhaite bénéficier de l'accompagnement d'un technicien autour2vous qui consiste :</p><br />
+                <ul class="ul-fieldset">
+                    <li style="color:#F62459">à la présentation dans votre établissement du fonctionnement du compte client</li>
+                    <li style="color:#F62459">à la configuration sur un PC/tablette et sur un smartphone</li>
+                    <li style="color:#F62459">à la mise en condition avec des essais en temps réel</li>
+                    <li style="color:#F62459">aux réponses à toutes vos questions</li>                    
+                    <li style="color:#F62459">à une prestation d'une heure comprise (50 € HT les 30 min supplémentaires si nécessaires)</li>                    
+                </ul><br />
+                <p><i>Le technicien prendra directement rendez-vous avec vous par téléphone.</i></p>
+                <p style="color:#ff0000"><span class="menu btn btn-info"></span>Service disponible uniquement sur Paris et en région parisienne </p>
+            </fieldset>
+            
+            <fieldset>
+                <legend align="center">Total à payer à l'inscription</legend>                               
+                <table class="table-paiement-mode">
+                    <tr class="total-f1"><td>Formule <b>Economique</b></td><td>100 € HT</td></tr>                    
+                    <tr class="total-f7" style="display:none;"><td>Formule <b>Privilège</b></td><td>200 € HT</td></tr>                      
+                    <tr class="total-f0" style="display:none;"><td>Formule <b>Gratuite</b></td><td>0 € HT</td></tr>
+                    <tr class="total-training" style="display:none;"><td><b>Formation</b></td><td>100 € HT</td></tr>                   
+                    <tr style="background-color: #fff;"><td colspan="2">&nbsp;</td></tr>
+                    <tr class="total-ht"><td>Total HT</td><td>100 € HT</td></tr>
+                    <tr class="total-tva"><td>Total TVA</td><td>20 € HT</td></tr>
+                    <tr class="total-ttc"><td><b>Total TTC</b></td><td><b>120 € TTC</b></td></tr>
+                </table>
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">RIB pour prélèvement automatique <a href="http://www.abe-infoservice.fr/banque/fonctionnement-du-compte/le-code-bic-et-le-code-iban.html" target="_blank"><span class="menu btn btn-info"></span></a></legend> 
+                <label>IBAN</label>
+                <input type="text" name="iban" value="" class="iban" maxlength="34" />
+                <label>BIC / SWIFT</label>
+                <input type="text" name="bic" value="" pattern="[A-Za-z0-9]{8,11}" class="bic" maxlength="11" required="required"/>                
+                {#<p style="color:#F62459;">Vous pouvez remplir le RIB ultérieurement.</p>#}
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">Gérant/Responsable</legend>
+                <label>Nom</label>
+                <input type="text" name="contact[name]" value="{{client.contact}}" pattern="[A-Za-z\s]{3,40}" required="required" maxlength="40"/>
+                <label>Fonction</label>
+                <input type="text" name="contact[function]" value="" pattern="[A-Za-z\s]{3,20}" required="required" maxlength="20" />
+                <label>Téléphone portable</label>
+                <input type="tel" name="contact[phone]" value="" required="required" maxlength="10"/>
+            </fieldset>       
+
+            <div class="div-agreement">
+                <label style="color:#fff">En cochant cette case, je certifie être le représentant légal de ma société, 
+                    autorise la société autour2vous à effectuer des prélèvements sur mon compte bancaire, 
+                    confirme avoir lu et accepte                    
+                    <a href="static/pdf/cgv_restaurants.pdf" target="_blank" class="link-agreement" 
+                       style="color:#000;text-decoration: underline;">les conditions générales de vente. En cochant cette case je valide mon inscription.</a>
+                </label>
+                <input type="checkbox" name="agreement" class='agreement' value="1" required="required" />
+            </div>               
+
+            <fieldset class="fieldset-signature">
+                <!--<p class="typeItDesc">Review your signature</p>-->
+                <p class="drawItDesc"><i>Signez ci-dessous</i></p>
+                <div class="sigNav">
+                    <!--<p class="typeIt"><a href="#type-it" class="current">Type It</a></p>
+                    <p class="drawIt"><a href="#draw-it">Draw It</a></p>-->                    
+                </div>
+                <p class="clearButton"><a href="#clear">Effacer</a></p>
+                <div class="sig sigWrapper">
+                    <div class="typed"></div>
+                    <canvas class="pad" width="200" height="100"></canvas>
+                    <input type="hidden" name="output" class="output" />
+                    <input type="hidden" name="signature" class="signature" />
+                </div>
+            </fieldset>
+            
+            <br />            
+            <input type="hidden" name="category" value="1"/>
+            <input type="submit" class="btn-form btn-form-p creation-form-submit" value="Je signe le contrat" />   
+        </form>
+
+        <form action="/client/subscribe" method="post" class="without-resa-form sigPad" 
+              {% if "Restaurant" == client.category %}style="display:none;"{% endif %}>                
+            <fieldset>
+                <legend align="center">Identité</legend>
+                <label>Nom de l'entreprise / raison sociale</label>
+                <input type="text" name="company" value="{{client.company}}" required="required" />                                    
+                <label>SIRET (14 chiffres)</label> 
+                <input type="text" name="siret" value="" required="required" pattern="[0-9]{14}" maxlength="14"/>            
+                <label>Code APE/NAF</label> 
+                <input type="text" name="ape" value="" required="required" pattern="[0-9A-Za-z]{5}" maxlength="5"/>            
+                <label>Téléphone de l'entreprise</label> 
+                <input type="tel" name="phone" value="{{client.phone}}" maxlength="10"/>
+                <label>Adresse email</label>
+                <input type="text" name="email" value="{{client.email}}" />
+            </fieldset>
+            <fieldset>
+                <legend align="center">Adresse</legend>
+                <label>Adresse postale</label>   
+                <label>Pour des raisons de géolocalisation optimale et de bon fonctionnement merci de respecter le format :</label>
+                <label><b>"numéro, rue, code postal, ville, France (virgules nécessaires)"</b></label>
+                <input type="text" name="address" value="{{client.address}}"/>            
+                <label>Code postal</label>
+                <input type="text" name="postalcode" value="{{client.postalcode}}" maxlength="5"/>            
+                <label>Ville</label>
+                <input type="text" name="city" value="{{client.city}}"/>
+            </fieldset>                                                                            
+
+            <fieldset style="border-color: #F62459;">
+                <legend align="center" style="background-color:#F62459;">L'offre d'autour2vous</legend>
+                <ul style="text-align: left; list-style: disc; padding-left:20px;">
+                    <li style="color:#F62459">Pour les 500 premiers : inscription à vie garantie, aucun frais supplémentaire</li>
+                    <li>payez forfaitairement avec l'abonnement en illimité</li>
+                    <li>compte premium pour tous</li>
+                    <li>modification en temps réel et à volonté de votre fiche</li>
+                    <li>une interface ergonomique et accessible à tous et toutes sur PC, tablettes et mobiles</li>
+
+                    <li>payez au code barre</li>
+                    <li>compte premium pour tous</li>                    
+                    <li>modification en temps réel et à volonté de votre fiche</li>
+                    <li>une interface ergonomique et accessible à tous et toutes sur PC, tablettes et mobiles</li>
+                    <li>mettez en avant votre établissement autour2vous !</li>
+                    <li>vous êtes enfin maître de votre activité</li>
+
+                    <li>mettez en avant votre établissement avec les "évènements" autour2vous !</li>
+                    <li>vous êtes enfin maître de votre activité</li>
+                </ul>
+            </fieldset>
+            <fieldset>
+                <legend align="center">Mode de réservation</legend>
+                <label>Offre de lancement :</label>
+                <!--<label>Abonnement réservations illimitées 52 €/mois, engagement de 12 mois</label>
+                <label>autour2vous s'engage à reverser 2 €/mois à l'association La Mie de pain.</label>                -->
+                <h2>Mode de réservation simple :</h2><br />
+                <p>0,60 € par code barre dont 0,05 € reversé à l'association La Mie de pain,</p>
+                <p>prélèvement fin de mois, sans engagement</p>
+                <input type="hidden" name="registration[option]" value="0"/>
+            </fieldset> 
+
+            <fieldset>
+                <legend align="center">Frais d'inscription</legend>
+                <label>50 € HT</label><br />
+                <input type="hidden" name="registration[fee]" value="50"/>
+                <label>Règlement par prélèvement</label>
+                <input type="radio" name="registration[payment_mode]" value="0" checked="checked"/>
+                <label>Règlement par chèque à l'ordre de "autour2vous"</label>
+                <input type="radio" name="registration[payment_mode]" value="1" />
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">RIB pour prélèvement automatique <a href="http://www.abe-infoservice.fr/banque/fonctionnement-du-compte/le-code-bic-et-le-code-iban.html" target="_blank"><span class="menu btn btn-info"></span></a></legend> 
+                <label>IBAN</label>
+                <input type="text" name="iban" value="" pattern="[A-Za-z0-9]{27,34}" maxlength="34"/>
+                <label>BIC / SWIFT</label>
+                <input type="text" name="bic" value="" pattern="[A-Za-z0-9]{8,11}" maxlength="11"/>
+                <p style="color:#F62459;">Vous pouvez remplir le RIB ultérieurement.</p>
+            </fieldset>
+
+            <fieldset>
+                <legend align="center">Gérant/Responsable</legend>
+                <label>Nom</label>
+                <input type="text" name="contact[name]" value="{{client.contact}}" />
+                <label>Téléphone portable</label>
+                <input type="tel" name="contact[phone]" value="" required="required" maxlength="10"/>
+            </fieldset>      
+
+            <div class="div-agreement">
+                <label style="color:#fff">En cochant cette case, je certifie avoir plus de 18 ans, être le représentant légal de ma société, confirme avoir lu et accepte
+                    <!--<a href="#" class="link-agreement" style="color:#000">les conditions générales de vente. En cochant cette case je valide mon inscription.</a>-->
+                    <a href="static/pdf/cgv_pub_abonnement.pdf" target="_blank" class="link-agreement" style="color:#000;text-decoration: underline;">les conditions générales de vente. En cochant cette case je valide mon inscription.</a>
+                </label>
+                <input type="checkbox" name="agreement" class='agreement' value="1" required="required" />
+            </div>
+
+            <fieldset class="fieldset-signature">
+                <!--<p class="typeItDesc">Review your signature</p>-->
+                <p class="drawItDesc"><i>Signez ci-dessous</i></p>
+                <div class="sigNav">
+                    <!--<p class="typeIt"><a href="#type-it" class="current">Type It</a></p>
+                    <p class="drawIt"><a href="#draw-it">Draw It</a></p>-->                    
+                </div>
+                <p class="clearButton"><a href="#clear">Effacer</a></p>
+                <div class="sig sigWrapper">
+                    <div class="typed"></div>
+                    <canvas class="pad" width="200" height="100"></canvas>
+                    <input type="hidden" name="output" class="output" />
+                    <input type="hidden" name="signature" class="signature" />
+                </div>
+            </fieldset>
+
+            <br />        
+            <input type="hidden" name="reservation_mode" value="0"/>
+            <input type="hidden" name="category" value="2"/>
+            <input type="submit" class="btn-form btn-form-p creation-form-submit" value="Je signe le contrat" />   
+        </form>
+    </div>        
+</div>

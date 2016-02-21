@@ -1,0 +1,25 @@
+<div class="div-box">
+    <span class="div-box-header">
+        <h1>{{__("Refus de réservation")}}</h1>
+    </span>
+    <div class="div-box-body bg-white">                
+        <p>{{__("Merci de préciser le motif de votre refus :")}}</p>
+        <form action="/client/refuse-reservation" method="post">                 
+            <select name="reason" required="required">
+                <option value="0">{{__("Nous sommes complets")}}</option>
+                <option value="1">{{__("Merci de choisir une heure différente (supérieure)")}}</option>
+                <option value="2">{{__("Merci de choisir une heure différente (inférieure)")}}</option>
+                <option value="3">{{__("Le nombre de personnes est trop important (2 max)")}}</option>
+                <option value="4">{{__("Le nombre de personnes est trop important (4 max)")}}</option>
+                <option value="5">{{__("Le nombre de personnes est trop important (6 max)")}}</option>
+                <option value="6">{{__("Le nombre de personnes est trop important (8 max)")}}</option>
+                <option value="7">{{__("Le nombre de personnes est trop important (10 max)")}}</option>
+                <option value="8">{{__("Le nombre de personnes est trop important (15 max)")}}</option>
+                <option value="9">{{__("Le nombre de personnes est trop important (20 max)")}}</option>
+            </select>            
+            <input type="hidden" name="user_id" value="{{user_id}}" />        
+            <input type="hidden" name="prospect_id" value="{{client._id}}" />   
+            <input type="submit" class="btn-form btn-form-p" value="{{__("Valider")}}" />
+        </form>        
+    </div>
+</div>
